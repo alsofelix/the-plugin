@@ -177,7 +177,7 @@ class GuidesCommittee(commands.Cog):
                 await ctx.channel.edit(name=f"claimed-{nickname}")
 
                 m = await ctx.message.channel.send(
-                    f"Succesfully renamed, this rename was sponsored by the **guides committee**")
+                    f"Successfully renamed, this rename was sponsored by the **guides committee**")
 
                 await asyncio.sleep(10)
 
@@ -258,25 +258,25 @@ class GuidesCommittee(commands.Cog):
     @commands.command()
     async def credits(self, ctx):
         print("HI")
-        embed = EmbedMaker(title="Credits", description="- Designer: Chairwoman Abbi\n- Developer: Chairwoman Abbi\n- "
-                                                        "Supporter: Chairwoman Abbi\n- Animator: Chairwoman Abbi\n- "
-                                                        "Moderator: Chairwoman Abbi\n- Admin: Chairwoman Abbi\n- "
-                                                        "Technical Support: Chairwoman Abbi\n- Server Infrastructure "
-                                                        "Lead: Chairwoman Abbi\n- UI Designer: Chairwoman Abbi\n- UI "
-                                                        "Developer: Chairwoman Abbi\n- UI Supporter: Chairwoman "
-                                                        "Abbi\n- UI Animator: Chairwoman Abbi\n- UI Moderator: "
-                                                        "Chairwoman Abbi\n- Chief Engineer: Chairwoman "
-                                                        "Abbi\n- Engineer: Chairwoman Abbi\n- Chief Technology Officer:"
-                                                        "Chairwoman Abbi\n- Technology Officer: Chairwoman "
-                                                        "Abbi\n- Senior Leader for Community Engagement and Conflict "
-                                                        "Resolution Oversight: Chairwoman Abbi\n- Chief Community "
-                                                        "Manager: Chairwoman Abbi\n- Lead Content Moderator and "
+        embed = EmbedMaker(title="Credits", description="- Designer: **Chairwoman Abbi**\n- Developer: **Chairwoman Abbi**\n- "
+                                                        "Supporter: **Chairwoman Abbi**\n- Animator: **Chairwoman Abbi**\n- "
+                                                        "Moderator: **Chairwoman Abbi**\n- Admin: **Chairwoman Abbi**\n- "
+                                                        "Technical Support: **Chairwoman Abbi**\n- Server Infrastructure "
+                                                        "Lead: **Chairwoman Abbi**\n- UI Designer: **Chairwoman Abbi**\n- UI "
+                                                        "Developer: **Chairwoman Abbi**\n- UI Supporter: **Chairwoman "
+                                                        "Abbi**\n- UI Animator: **Chairwoman Abbi**\n- UI Moderator: "
+                                                        "**Chairwoman Abbi**\n- Chief Engineer: **Chairwoman "
+                                                        "Abbi**\n- Engineer: **Chairwoman Abbi**\n- Chief Technology Officer:"
+                                                        "**Chairwoman Abbi**\n- Technology Officer: **Chairwoman "
+                                                        "Abbi**\n- Senior Leader for Community Engagement and Conflict "
+                                                        "Resolution Oversight: **Chairwoman Abbi**\n- Chief Community "
+                                                        "Manager: **Chairwoman Abbi**\n- Lead Content Moderator and "
                                                         "Compliance Officer for Online Community Standards "
-                                                        "Enforcement: Chairwoman Abbi\n- Chief Governance and Policy "
+                                                        "Enforcement: **Chairwoman Abbi**\n- Chief Governance and Policy "
                                                         "Enforcement Administrator for Moderation Team Operations: "
-                                                        "Chairwoman Abbi\n- Chief Community Manager: Chairwoman "
-                                                        "Abbi\n- Principal Regulatory Compliance Manager for User "
-                                                        "Conduct and Content Moderation")
+                                                        "**Chairwoman Abbi**\n- Chief Community Manager: **Chairwoman "
+                                                        "Abbi**\n- Principal Regulatory Compliance Manager for User "
+                                                        "Conduct and Content Moderation: **Chairwoman Abbi**")
         await ctx.message.reply(embed=embed)
 
 
