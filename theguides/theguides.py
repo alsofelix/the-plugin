@@ -249,10 +249,10 @@ class GuidesCommittee(commands.Cog):
                             owns = False
 
                     if owns is True:
-                        e = EmbedMaker(title="Gamepass Owned", description=f"{gamepass_id[0]} owned by {username}, [link](https://inventory.roblox.com/v1/users/{username_id}/items/1/{gamepass_id}/is-owned)")
+                        e = EmbedMaker(title="Gamepass Owned", description=f"{gamepass_id[0]} owned by {username}, [link](https://inventory.roblox.com/v1/users/{username_id}/items/1/{gamepass_id[1]}/is-owned)")
                         return await ctx.message.reply(embed=e)
                     else:
-                        e = EmbedMaker(title="Gamepass NOT Owned ⛔⛔⛔", description=f"{gamepass_id[0]} not owned by {username}, [link](https://inventory.roblox.com/v1/users/{username}/items/1/{gamepass}/is-owned)")
+                        e = EmbedMaker(title="Gamepass NOT Owned ⛔⛔⛔", description=f"{gamepass_id[0]} not owned by {username}, [link](https://inventory.roblox.com/v1/users/{username_id}/items/1/{gamepass_id[1]}/is-owned)")
                         return await ctx.message.reply(embed=e)
 
     @commands.command()
