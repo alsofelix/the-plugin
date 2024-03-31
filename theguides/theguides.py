@@ -74,6 +74,7 @@ class GuidesCommittee(commands.Cog):
         self.bot.get_command("areply").add_check(check)
         self.bot.get_command("fareply").add_check(check)
         self.bot.get_command("freply").add_check(check)
+        self.bot.get_command("close").add_check(check)
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
@@ -193,7 +194,7 @@ class GuidesCommittee(commands.Cog):
 
     async def cog_unload(self):
         cmds = [self.bot.get_command("reply"), self.bot.get_command("freply"), self.bot.get_command("areply"),
-                self.bot.get_command("fareply")]
+                self.bot.get_command("fareply"), self.bot.get_command("close")]
         for i in cmds:
             if check in i.checks:
                 print(f'REMOVING CHECK IN {i.name}')  # Some logging yh
