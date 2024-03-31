@@ -15,7 +15,7 @@ import json
 from difflib import SequenceMatcher
 
 
-THUMBNAIL = "https://cdn.discordapp.com/attachments/1208495821868245012/1223677006894596146/Propaganda3.png?ex=661ab905&is=66084405&hm=f66c28d77dc53ad7c31228a367ae9cfea2f6489514b59c63497f186863d0b691&"
+# THUMBNAIL = "https://cdn.discordapp.com/attachments/1208495821868245012/1223677006894596146/Propaganda3.png?ex=661ab905&is=66084405&hm=f66c28d77dc53ad7c31228a367ae9cfea2f6489514b59c63497f186863d0b691&"
 FOOTER = "Sponsored by the Guides Committee"
 
 gamepasses = {
@@ -38,7 +38,7 @@ def find_most_similar(name):
 
 def EmbedMaker(**kwargs):
     e = discord.Embed(**kwargs, colour=0x8e00ff)
-    e.set_image(url=THUMBNAIL)
+#    e.set_image(url=THUMBNAIL)
     e.set_footer(text=FOOTER)
     return e
 
@@ -256,29 +256,29 @@ class GuidesCommittee(commands.Cog):
                         e = EmbedMaker(title="Gamepass NOT Owned ⛔⛔⛔", description=f"{gamepass_id[0]} not owned by {username}, [link](https://inventory.roblox.com/v1/users/{username_id}/items/1/{gamepass_id[1]}/is-owned)")
                         return await ctx.message.reply(embed=e)
 
-    @commands.command()
-    async def credits(self, ctx):
-        print("HI")
-        embed = EmbedMaker(title="Credits", description="- Designer: **Chairwoman Abbi**\n- Developer: **Chairwoman Abbi**\n- "
-                                                        "Supporter: **Chairwoman Abbi**\n- Animator: **Chairwoman Abbi**\n- "
-                                                        "Moderator: **Chairwoman Abbi**\n- Admin: **Chairwoman Abbi**\n- "
-                                                        "Technical Support: **Chairwoman Abbi**\n- Server Infrastructure "
-                                                        "Lead: **Chairwoman Abbi**\n- UI Designer: **Chairwoman Abbi**\n- UI "
-                                                        "Developer: **Chairwoman Abbi**\n- UI Supporter: **Chairwoman "
-                                                        "Abbi**\n- UI Animator: **Chairwoman Abbi**\n- UI Moderator: "
-                                                        "**Chairwoman Abbi**\n- Chief Engineer: **Chairwoman "
-                                                        "Abbi**\n- Engineer: **Chairwoman Abbi**\n- Chief Technology Officer:"
-                                                        "**Chairwoman Abbi**\n- Technology Officer: **Chairwoman "
-                                                        "Abbi**\n- Senior Leader for Community Engagement and Conflict "
-                                                        "Resolution Oversight: **Chairwoman Abbi**\n- Chief Community "
-                                                        "Manager: **Chairwoman Abbi**\n- Lead Content Moderator and "
-                                                        "Compliance Officer for Online Community Standards "
-                                                        "Enforcement: **Chairwoman Abbi**\n- Chief Governance and Policy "
-                                                        "Enforcement Administrator for Moderation Team Operations: "
-                                                        "**Chairwoman Abbi**\n- Chief Community Manager: **Chairwoman "
-                                                        "Abbi**\n- Principal Regulatory Compliance Manager for User "
-                                                        "Conduct and Content Moderation: **Chairwoman Abbi**")
-        await ctx.message.reply(embed=embed)
+#    @commands.command()
+#    async def credits(self, ctx):
+#        print("HI")
+#        embed = EmbedMaker(title="Credits", description="- Designer: **Chairwoman Abbi**\n- Developer: **Chairwoman Abbi**\n- "
+#                                                        "Supporter: **Chairwoman Abbi**\n- Animator: **Chairwoman Abbi**\n- "
+#                                                        "Moderator: **Chairwoman Abbi**\n- Admin: **Chairwoman Abbi**\n- "
+#                                                        "Technical Support: **Chairwoman Abbi**\n- Server Infrastructure "
+#                                                        "Lead: **Chairwoman Abbi**\n- UI Designer: **Chairwoman Abbi**\n- UI "
+#                                                        "Developer: **Chairwoman Abbi**\n- UI Supporter: **Chairwoman "
+#                                                        "Abbi**\n- UI Animator: **Chairwoman Abbi**\n- UI Moderator: "
+#                                                        "**Chairwoman Abbi**\n- Chief Engineer: **Chairwoman "
+#                                                        "Abbi**\n- Engineer: **Chairwoman Abbi**\n- Chief Technology Officer:"
+#                                                        "**Chairwoman Abbi**\n- Technology Officer: **Chairwoman "
+#                                                        "Abbi**\n- Senior Leader for Community Engagement and Conflict "
+#                                                        "Resolution Oversight: **Chairwoman Abbi**\n- Chief Community "
+#                                                        "Manager: **Chairwoman Abbi**\n- Lead Content Moderator and "
+#                                                        "Compliance Officer for Online Community Standards "
+#                                                        "Enforcement: **Chairwoman Abbi**\n- Chief Governance and Policy "
+#                                                        "Enforcement Administrator for Moderation Team Operations: "
+#                                                        "**Chairwoman Abbi**\n- Chief Community Manager: **Chairwoman "
+#                                                        "Abbi**\n- Principal Regulatory Compliance Manager for User "
+#                                                        "Conduct and Content Moderation: **Chairwoman Abbi**")
+#        await ctx.message.reply(embed=embed)
 
 
 
