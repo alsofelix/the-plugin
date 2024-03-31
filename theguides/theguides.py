@@ -93,9 +93,9 @@ class GuidesCommittee(commands.Cog):
 
                 m = await ctx.message.channel.send(embed=embed)
 
-                await asyncio.sleep(10)  # Should be longer ngl
+                # await asyncio.sleep(10)  # Should be longer ngl
 
-                await m.delete()
+                # await m.delete()
 
             except discord.errors.Forbidden:
                 await ctx.message.reply("I don't have permission to do that")
