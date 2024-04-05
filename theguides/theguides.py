@@ -166,8 +166,9 @@ class GuidesCommittee(commands.Cog):
         for i in roles_to_take_c:
             roles_claimed.remove(i)
 
+
         if (ROLE_HIERARCHY.index(roles_taker[len(roles_taker) - 1]) < ROLE_HIERARCHY.index(
-                roles_claimed[len(roles_taker) - 1])):
+                roles_claimed[len(roles_claimed) - 1])):
             await self.db.find_one_and_update({'thread_id': str(ctx.thread.channel.id)},
                                               {'$set': {'claimer': str(ctx.author.id)}})
             e = EmbedMaker(title="Takeover", description=f"Takeover by <@{ctx.author.id}> succesful")
