@@ -47,13 +47,17 @@ MODS = {
     "amod": "1165941639144034334",
 }
 
-ROLE_HIERARCHY = ['1165941140499988560', '1165941871332302900', '1165941639144034334', '1165941640196784158',
+ROLE_HIERARCHY = ['1165941140499988560', '1165946875728371772', '1165941871332302900', '1165941639144034334', '1165941640196784158',
                   '1165941641106952222']
 
 
 # ROLE_HIERARCHY = ['1223001309217820702','1223001302397616188','1223001292100866289', '1223001271867412670']
 
 async def check(ctx):
+    has = await ctx.author.get_role('1165946875728371772')
+    if has is not None:
+        return True
+    
     coll = ctx.bot.plugin_db.get_partition(ctx.bot.get_cog('GuidesCommittee'))
     thread = await coll.find_one({'thread_id': str(ctx.thread.channel.id)})
     if thread is not None:
