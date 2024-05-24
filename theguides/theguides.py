@@ -158,9 +158,9 @@ class GuidesCommittee(commands.Cog):
     async def takeover(self, ctx):
         roles_taker = [str(i.id) for i in ctx.author.roles]
         roles_to_take_t = []
-        for i in range(len(roles_taker)):
-            if roles_taker[i] not in ROLE_HIERARCHY:
-                roles_to_take_t.append(roles_taker[i])
+        for i, item in enumerate(roles_taker):
+            if item not in ROLE_HIERARCHY:
+                roles_to_take_t.append(item)
 
         for i in roles_to_take_t:
             roles_taker.remove(i)
@@ -182,9 +182,9 @@ class GuidesCommittee(commands.Cog):
         roles_claimed = [str(i.id) for i in mem.roles]
 
         roles_to_take_c = []
-        for i in range(len(roles_claimed)):
-            if roles_claimed[i] not in ROLE_HIERARCHY:
-                roles_to_take_c.append(roles_claimed[i])
+        for i, item in enumerate(roles_claimed):
+            if item not in ROLE_HIERARCHY:
+                roles_to_take_c.append(item)
 
         for i in roles_to_take_c:
             roles_claimed.remove(i)
