@@ -350,7 +350,7 @@ class GuidesCommittee(commands.Cog):
     @commands.command()
     @core.checks.thread_only()
     async def getinfo(self, ctx):
-        await ctx.message.add_reaction("<a:dssdsdsdsd:1249801648478486630>")
+        await ctx.message.add_reaction("<a:loading_f:1249799401958936576>")
         m_id = ctx.thread.recipient.id
         gamepasses_owned = {key: "IDK" for key in gamepasses.keys()}
 
