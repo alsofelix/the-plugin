@@ -565,6 +565,7 @@ class GuidesCommittee(commands.Cog):
             return await ctx.message.channel.send(str(e))
 
     @commands.command()
+    @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
     async def credits(self, ctx):
         embed = EmbedMaker(
             ctx,
