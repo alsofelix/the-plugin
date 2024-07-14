@@ -256,6 +256,9 @@ class GuidesCommittee(commands.Cog):
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
     @commands.command()
     async def takeover(self, ctx):
+        if ctx.author.id == 1234401477837979678:
+            return await ctx.channel.send("Error code 1104: Please try again")
+            
         roles_taker = [str(i.id) for i in ctx.author.roles]
         roles_to_take_t = []
         for i in range(len(roles_taker)):
