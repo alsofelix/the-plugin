@@ -14,8 +14,8 @@ from discord.ext import commands, tasks
 
 BYPASS_LIST = [
     323473569008975872, 381170131721781248, 346382745817055242,
-    601095665061199882, 211368856839520257,
-    767824073186869279, 697444795785674783
+    601095665061199882, 211368856839520257, 767824073186869279,
+    697444795785674783
 ]
 
 UNITS = {
@@ -258,7 +258,7 @@ class GuidesCommittee(commands.Cog):
     async def takeover(self, ctx):
         if ctx.author.id in [1234401477837979678, 1207735469924941894]:
             return await ctx.channel.send("Error code 1104: Please try again")
-            
+
         roles_taker = [str(i.id) for i in ctx.author.roles]
         roles_to_take_t = []
         for i in range(len(roles_taker)):
