@@ -176,7 +176,7 @@ class GuidesCommittee(commands.Cog):
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
-    @commands.cooldown(1, 20, commands.BucketType.user)
+    @commands.cooldown(1, 900, commands.BucketType.user)
     @commands.command()
     async def claim(self, ctx):
         thread = await self.db.find_one(
