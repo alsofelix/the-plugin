@@ -176,6 +176,7 @@ class GuidesCommittee(commands.Cog):
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
+    @commands.cooldown(1, 20, commands.BucketType.user)
     @commands.command()
     async def claim(self, ctx):
         thread = await self.db.find_one(
@@ -256,9 +257,6 @@ class GuidesCommittee(commands.Cog):
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
     @commands.command()
     async def takeover(self, ctx):
-        if ctx.author.id in [1234401477837979678, 1207735469924941894]:
-            return await ctx.channel.send("Error code 1104: Please try again")
-            
         roles_taker = [str(i.id) for i in ctx.author.roles]
         roles_to_take_t = []
         for i in range(len(roles_taker)):
