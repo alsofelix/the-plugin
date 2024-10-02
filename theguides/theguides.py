@@ -14,8 +14,8 @@ from discord.ext import commands, tasks
 
 BYPASS_LIST = [
     323473569008975872, 381170131721781248, 346382745817055242,
-    601095665061199882, 211368856839520257,
-    767824073186869279, 697444795785674783
+    601095665061199882, 211368856839520257, 767824073186869279,
+    697444795785674783
 ]
 
 UNITS = {
@@ -177,7 +177,9 @@ class GuidesCommittee(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            await ctx.send("**This command is on cooldown for another {:.0f}:{:02.0f}!**".format(*divmod(error.retry_after, 60)))
+            await ctx.send(
+                "**This command is on cooldown for another {:.0f}:{:02.0f}!**".
+                format(*divmod(error.retry_after, 60)))
         else:
             super().on_command_error(error)
 
