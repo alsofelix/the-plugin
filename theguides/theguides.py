@@ -174,6 +174,13 @@ class GuidesCommittee(commands.Cog):
         self.bot.get_command("freply").add_check(check)
         self.bot.get_command("close").add_check(check)
 
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send("**This command is on cooldown for another {:.0f}:{:02.0f}!**".format(*divmod(error.retry_after, 60)))
+        else:
+            super().on_command_error(error)
+
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
     @commands.cooldown(1, 900, commands.BucketType.user)
