@@ -187,6 +187,7 @@ class GuidesCommittee(commands.Cog):
         else:
             super().cog_command_error(ctx, error)
 
+
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
     @commands.cooldown(1, 900, commands.BucketType.user)
