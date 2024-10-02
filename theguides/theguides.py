@@ -181,12 +181,11 @@ class GuidesCommittee(commands.Cog):
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            embed = EmbedMaker(ctx, title="On Cooldown", description=f"You can use this command again in <t:{unix_converter(error.retry_after)}>")
+            embed = EmbedMaker(ctx, title="On Cooldown", description=f"You can use this command again in <t:{unix_converter(error.retry_after)}R>")
 
             await ctx.send(embed=embed)
         else:
             super().cog_command_error(ctx, error)
-
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
