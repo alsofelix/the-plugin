@@ -121,7 +121,7 @@ def EmbedMaker(ctx, **kwargs):
     e.set_footer(text=FOOTER if ctx.author.id != 767824073186869279 else
                  "Thank you Chairwoman Abbi for gracing us with your presence")
     return e
-
+#
 
 MODS = {
     "amod": "1165941639144034334",
