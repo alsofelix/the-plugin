@@ -175,12 +175,12 @@ class GuidesCommittee(commands.Cog):
         self.bot.get_command("close").add_check(check)
 
     @commands.Cog.listener()
-    async def on_cog_command_error(self, ctx, error):
+    async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             embed = EmbedMaker(ctx, title="On Cooldown", description="Retry in {:.0f} minutes and {:02.0f} seconds".format(*divmod(error.retry_after, 60)))
             await ctx.send(embed=embed)
         else:
-            super().on_cog_command_error(ctx, error)
+            super().cog_command_error(ctx, error)
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
