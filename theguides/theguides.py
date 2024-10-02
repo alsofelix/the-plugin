@@ -32,6 +32,11 @@ HEADERS = {'Authorization': BLOXLINK_API_KEY}
 
 EMOJI_VALUES = {True: "✅", False: "⛔"}
 
+def unix_converter(seconds: int) -> int:
+    now = datetime.now()
+    then = now + timedelta(seconds=seconds)
+
+    return int(then.timestamp())
 
 def convert_to_seconds(text):
     return int(
@@ -176,7 +181,8 @@ class GuidesCommittee(commands.Cog):
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            embed = EmbedMaker(ctx, title="On Cooldown", description="Retry in {:.0f} minutes and {:02.0f} seconds".format(*divmod(error.retry_after, 60)))
+            embed = EmbedMaker(ctx, title="On Cooldown", description=f"You can use this command again in <t:{unix_converter(error.retry_after)}>")
+
             await ctx.send(embed=embed)
         else:
             super().cog_command_error(ctx, error)
