@@ -174,7 +174,6 @@ class GuidesCommittee(commands.Cog):
         self.bot.get_command("freply").add_check(check)
         self.bot.get_command("close").add_check(check)
 
-    @commands.Cog.listener()
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             embed = EmbedMaker(ctx, title="On Cooldown", description="Retry in {:.0f} minutes and {:02.0f} seconds".format(*divmod(error.retry_after, 60)))
