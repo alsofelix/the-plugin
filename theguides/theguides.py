@@ -14,8 +14,8 @@ from discord.ext import commands, tasks
 
 BYPASS_LIST = [
     323473569008975872, 381170131721781248, 346382745817055242,
-    601095665061199882, 211368856839520257,
-    767824073186869279, 697444795785674783
+    601095665061199882, 211368856839520257, 767824073186869279,
+    697444795785674783
 ]
 
 UNITS = {
@@ -32,11 +32,13 @@ HEADERS = {'Authorization': BLOXLINK_API_KEY}
 
 EMOJI_VALUES = {True: "✅", False: "⛔"}
 
+
 def unix_converter(seconds: int) -> int:
     now = datetime.now()
     then = now + timedelta(seconds=seconds)
 
     return int(then.timestamp())
+
 
 def convert_to_seconds(text):
     return int(
@@ -126,6 +128,8 @@ def EmbedMaker(ctx, **kwargs):
     e.set_footer(text=FOOTER if ctx.author.id != 767824073186869279 else
                  "Thank you Chairwoman Abbi for gracing us with your presence")
     return e
+
+
 #
 
 MODS = {
@@ -181,12 +185,16 @@ class GuidesCommittee(commands.Cog):
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            embed = EmbedMaker(ctx, title="On Cooldown", description=f"You can use this command again in <t:{unix_converter(error.retry_after)}>")
+            embed = EmbedMaker(
+                ctx,
+                title="On Cooldown",
+                description=
+                f"You can use this command again in <t:{unix_converter(error.retry_after)}>"
+            )
 
             await ctx.send(embed=embed)
         else:
             super().cog_command_error(ctx, error)
-
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
