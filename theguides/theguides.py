@@ -84,7 +84,7 @@ class DropDownChannels(discord.ui.Select):
         category_id = channel_options[self.values[0]]
         category = interaction.guild.get_channel(int(category_id))
 
-        await interaction.channel.edit(category=category)
+        await interaction.channel.edit(category=category, sync_permissions=True)
 
         await interaction.response.edit_message(
             content="Moved channel successfully", view=None)
