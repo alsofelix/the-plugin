@@ -116,17 +116,17 @@ gamepasses = {
 }
 
 # MONOKAI PRO PALETTE
-colours = {
-    "blue": "#204a87",
-    "grey": "#939293",
-    "lightgreen": "#bad761",
-    "lightgrey": "#b2b9bd",
-    "orange": "#fc9867",
-    "purple": "c39ac9",
-    "red": "#ff657",
-    "teal": "#9cd1bb",
-    "white": "#eaf1f1",
-    "yellow": "#ffd76d"
+olours = {
+    "blue": 0x204a87,
+    "grey": 0x939293,
+    "lightgreen": 0xBAD761,
+    "lightgrey": 0xB2B9BD,
+    "orange": 0xFC9867,
+    "purple": 0xC39AC9,
+    "red": 0xFF657,
+    "teal": 0x9CD1BB,
+    "white": 0xEAF1F1,
+    "yellow": 0xFFD76D
 }
 
 
