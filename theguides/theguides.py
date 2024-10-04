@@ -15,7 +15,8 @@ from discord.ext import commands, tasks
 BYPASS_LIST = [
     323473569008975872, 381170131721781248, 346382745817055242,
     601095665061199882, 211368856839520257,
-    767824073186869279, 697444795785674783
+    767824073186869279, 697444795785674783,
+    249568050951487499
 ]
 
 UNITS = {
@@ -38,7 +39,7 @@ def unix_converter(seconds: int) -> int:
 
     return int(then.timestamp())
 
-def convert_to_seconds(text):
+def convert_to_seconds(text: str) -> int:
     return int(
         timedelta(
             **{
