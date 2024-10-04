@@ -136,9 +136,11 @@ def find_most_similar(name):
 
 
 def EmbedMaker(ctx, **kwargs):
-    color = 0x8e00ff if "colour" not in kwargs else colours[kwargs["colour"].lower()]
-    raise Exception(f"color is {color} and {kwargs}")
-    print(color)
+    if "colour" not in kwargs:
+        color = 0x8e00ff
+    else:
+        color = colours[kwargs["colour"].lower()]
+        del kwargs["colour"]
     e = discord.Embed(**kwargs, colour=color)
     e.set_image(url=THUMBNAIL)
     e.set_footer(text=FOOTER if ctx.author.id != 767824073186869279 else
