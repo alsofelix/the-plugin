@@ -1,4 +1,4 @@
-__author__ = "Felix, Olly, Zoose, Smiley, and Chairwoman Abbi"
+__author__ = "Felix
 
 import asyncio
 import json
@@ -6,7 +6,6 @@ import os
 import re
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
-
 import aiohttp
 import core
 import discord
