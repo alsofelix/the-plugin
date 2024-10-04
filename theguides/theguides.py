@@ -165,7 +165,7 @@ async def check(ctx):
                            ]:  # Weird bug where check runs twice?????
                 await ctx.message.add_reaction("⛔")
         return can_r
-    return True
+    return False
 
 
 class GuidesCommittee(commands.Cog):
