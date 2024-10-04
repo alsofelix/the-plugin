@@ -115,6 +115,20 @@ gamepasses = {
     "Segway Board": 22042259
 }
 
+# MONOKAI PRO PALETTE
+colours = {
+    "blue": "#204a87",
+    "grey": "#939293",
+    "lightgreen": "#bad761",
+    "lightgrey": "#b2b9bd",
+    "orange": "#fc9867",
+    "purple": "c39ac9",
+    "red": "#ff657",
+    "teal": "#9cd1bb",
+    "white": "#eaf1f1",
+    "yellow": "#ffd76d"
+}
+
 
 def find_most_similar(name):
     return max(gamepasses.items(),
@@ -122,7 +136,8 @@ def find_most_similar(name):
 
 
 def EmbedMaker(ctx, **kwargs):
-    e = discord.Embed(**kwargs, colour=0x8e00ff)
+    colour = 0x8e00ff if "colour" not in kwargs else colours[kwargs["colour"].lower()]
+    e = discord.Embed(**kwargs, colour=colour)
     e.set_image(url=THUMBNAIL)
     e.set_footer(text=FOOTER if ctx.author.id != 767824073186869279 else
                  "Thank you Chairwoman Abbi for gracing us with your presence")
