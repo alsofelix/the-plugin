@@ -6,6 +6,7 @@ import os
 import re
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
+
 import aiohttp
 import core
 import discord
@@ -13,9 +14,8 @@ from discord.ext import commands, tasks
 
 BYPASS_LIST = [
     323473569008975872, 381170131721781248, 346382745817055242,
-    601095665061199882, 211368856839520257,
-    767824073186869279, 697444795785674783,
-    249568050951487499
+    601095665061199882, 211368856839520257, 767824073186869279,
+    697444795785674783, 249568050951487499
 ]
 
 UNITS = {
@@ -32,11 +32,13 @@ HEADERS = {'Authorization': BLOXLINK_API_KEY}
 
 EMOJI_VALUES = {True: "✅", False: "⛔"}
 
+
 def unix_converter(seconds: int) -> int:
     now = datetime.now()
     then = now + timedelta(seconds=seconds)
 
     return int(then.timestamp())
+
 
 def convert_to_seconds(text: str) -> int:
     return int(
@@ -85,7 +87,8 @@ class DropDownChannels(discord.ui.Select):
         category_id = channel_options[self.values[0]]
         category = interaction.guild.get_channel(int(category_id))
 
-        await interaction.channel.edit(category=category, sync_permissions=True)
+        await interaction.channel.edit(category=category,
+                                       sync_permissions=True)
 
         await interaction.response.edit_message(
             content="Moved channel successfully", view=None)
@@ -138,8 +141,14 @@ def EmbedMaker(ctx, **kwargs):
         del kwargs["colour"]
     e = discord.Embed(**kwargs, colour=color)
     # e.set_image(url=THUMBNAIL) I AM SORRY BUT HAS ENDED :(
-    e.set_footer(text="City Airways", icon_url="https://cdn.discordapp.com/icons/788228600079843338/21fb48653b571db2d1801e29c6b2eb1d.png?size=4096")
+    e.set_footer(
+        text="City Airways",
+        icon_url=
+        "https://cdn.discordapp.com/icons/788228600079843338/21fb48653b571db2d1801e29c6b2eb1d.png?size=4096"
+    )
     return e
+
+
 #
 
 MODS = {
@@ -199,7 +208,12 @@ class GuidesCommittee(commands.Cog):
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            embed = EmbedMaker(ctx, title="On Cooldown", description=f"You can use this command again <t:{unix_converter(error.retry_after)}:R>", colour="red")
+            embed = EmbedMaker(
+                ctx,
+                title="On Cooldown",
+                description=
+                f"You can use this command again <t:{unix_converter(error.retry_after)}:R>",
+                colour="red")
 
             await ctx.send(embed=embed)
         else:
