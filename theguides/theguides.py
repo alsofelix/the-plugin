@@ -227,7 +227,8 @@ class GuidesCommittee(commands.Cog):
                 embed = EmbedMaker(
                     ctx,
                     title="Claimed",
-                    description=f"Claimed by {ctx.author.mention}")
+                    description=f"Claimed by {ctx.author.mention}",
+                    colour="green")
 
                 m = await ctx.message.channel.send(embed=embed)
 
@@ -243,7 +244,8 @@ class GuidesCommittee(commands.Cog):
                 ctx,
                 title="Already Claimed",
                 description=
-                f"Already claimed by {(f'<@{claimer}>') if claimer != ctx.author.id else 'you dumbass'}"
+                f"Already claimed by {(f'<@{claimer}>') if claimer != ctx.author.id else 'you dumbass'}",
+                colour="red"
             )
             await ctx.send(embed=embed)
 
@@ -268,7 +270,8 @@ class GuidesCommittee(commands.Cog):
                 embed = EmbedMaker(
                     ctx,
                     title="Unclaimed",
-                    description=f"Unclaimed by {ctx.author.mention}")
+                    description=f"Unclaimed by {ctx.author.mention}",
+                    colour="green")
 
                 await ctx.channel.edit(name=thread['original_name'])
 
@@ -306,7 +309,8 @@ class GuidesCommittee(commands.Cog):
                 ctx,
                 title="Takeover Denied",
                 description=
-                f"You have literally claimed this yourself tf u doing")
+                f"You have literally claimed this yourself tf u doing",
+                colour="red")
             await ctx.channel.send(embed=embed)
             return
 
