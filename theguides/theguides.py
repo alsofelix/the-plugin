@@ -116,7 +116,7 @@ gamepasses = {
 }
 
 # MONOKAI PRO PALETTE
-olours = {
+colours = {
     "blue": 0x204a87,
     "grey": 0x939293,
     "lightgreen": 0xBAD761,
