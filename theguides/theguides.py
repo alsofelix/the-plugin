@@ -98,7 +98,7 @@ class DropDownView(discord.ui.View):
         self.add_item(dropdown)
 
 
-THUMBNAIL = "https://cdn.discordapp.com/attachments/1208495821868245012/1223677006894596146/Propaganda3.png?ex=661ab905&is=66084405&hm=f66c28d77dc53ad7c31228a367ae9cfea2f6489514b59c63497f186863d0b691&"
+THUMBNAIL = "https://cdn.discordapp.com/attachments/1208495821868245012/1291896171555455027/CleanShot_2024-10-04_at_23.53.582x.png?ex=6701c391&is=67007211&hm=1138ae2d92387ecde7be34af238bd756462970de2ca6ca559c6aa091f932a8ae&"
 FOOTER = "Sponsored by the Guides Committee"
 
 gamepasses = {
@@ -137,7 +137,7 @@ def EmbedMaker(ctx, **kwargs):
         color = colours[kwargs["colour"].lower()]
         del kwargs["colour"]
     e = discord.Embed(**kwargs, colour=color)
-    # e.set_image(url=THUMBNAIL) I AM SORRY BUT HAS ENDED :(
+    e.set_image(url=THUMBNAIL)
     e.set_footer(text="City Airways", icon_url="https://cdn.discordapp.com/icons/788228600079843338/21fb48653b571db2d1801e29c6b2eb1d.png?size=4096")
     return e
 #
