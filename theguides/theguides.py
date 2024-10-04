@@ -341,7 +341,7 @@ class GuidesCommittee(commands.Cog):
                 ctx,
                 title="Takeover Denied",
                 description=
-                f"Takeover denied by as claimer is your superior, this angers chairwoman abbi"
+                f"Takeover denied as claimer is your superior, if you need to takeover and this is not letting you, ask for a manual transfer to management."
             )
             await ctx.reply(embed=e)
 
