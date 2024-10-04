@@ -136,6 +136,7 @@ def find_most_similar(name):
 
 
 def EmbedMaker(ctx, **kwargs):
+    ctx.channel.send(kwargs)
     color = 0x8e00ff if "colour" not in kwargs else colours[kwargs["colour"].lower()]
     print(color)
     e = discord.Embed(**kwargs, colour=color)
