@@ -59,6 +59,7 @@ channel_options = {
     'Moderator Reports': '1246863733355970612'
 }
 
+# Dummy code for testing
 # channel_options = {
 #     'Mu': '1249441110829301911',
 #     'Phi': '1249441160762494997',
