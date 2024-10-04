@@ -1,4 +1,4 @@
-__author__ = "Felix
+__author__ = "Felix"
 
 import asyncio
 import json
