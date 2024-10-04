@@ -165,6 +165,10 @@ async def check(ctx):
                            ]:  # Weird bug where check runs twice?????
                 await ctx.message.add_reaction("⛔")
         return can_r
+    # cba to do this properly so repetition it is
+    if "⛔" not in [i.emoji for i in ctx.message.reactions
+                   ]:  # Weird bug where check runs twice?????
+        await ctx.message.add_reaction("⛔")
     return False
 
 
