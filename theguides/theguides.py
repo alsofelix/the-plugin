@@ -137,9 +137,8 @@ def EmbedMaker(ctx, **kwargs):
         color = colours[kwargs["colour"].lower()]
         del kwargs["colour"]
     e = discord.Embed(**kwargs, colour=color)
-    e.set_image(url=THUMBNAIL)
-    e.set_footer(text=FOOTER if ctx.author.id != 767824073186869279 else
-                 "Thank you Chairwoman Abbi for gracing us with your presence")
+    # e.set_image(url=THUMBNAIL) I AM SORRY BUT HAS ENDED :(
+    e.set_footer(text="City Airways", icon_url="https://cdn.discordapp.com/icons/788228600079843338/21fb48653b571db2d1801e29c6b2eb1d.png?size=4096")
     return e
 #
 
