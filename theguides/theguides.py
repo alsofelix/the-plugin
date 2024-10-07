@@ -32,6 +32,15 @@ HEADERS = {'Authorization': BLOXLINK_API_KEY}
 
 EMOJI_VALUES = {True: "✅", False: "⛔"}
 
+def get_cooldown_time(ctx):
+    pass
+
+"""
+Gets how many tickets a staff member has done
+"""
+def get_ticket_amount(user):
+    pass
+
 def unix_converter(seconds: int) -> int:
     now = datetime.now()
     then = now + timedelta(seconds=seconds)
