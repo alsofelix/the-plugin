@@ -1,6 +1,7 @@
 __author__ = "Felix"
 
 import asyncio
+import math
 import json
 import os
 import re
@@ -10,6 +11,8 @@ import aiohttp
 import core
 import discord
 from discord.ext import commands, tasks
+
+from aredis import StrictRedisCluster
 
 BYPASS_LIST = [
     323473569008975872, 381170131721781248, 346382745817055242,
@@ -31,14 +34,25 @@ SERVER_ID = "788228600079843338"
 HEADERS = {'Authorization': BLOXLINK_API_KEY}
 
 EMOJI_VALUES = {True: "✅", False: "⛔"}
+K_VALUE = 0.099
 
 def get_cooldown_time(ctx):
-    pass
+    user_id = ctx.user
+    tickets = get_ticket_amount(user_id)
+
+    if 5 < tickets < 36.6:
+        time = math.exp(K_VALUE*tickets)
+    else:
+        time = math.exp(K_VALUE * 36.6)
+
+    time *= 60
+
+    return time
 
 """
 Gets how many tickets a staff member has done
 """
-def get_ticket_amount(user):
+def get_ticket_amount(user) -> int:
     pass
 
 def unix_converter(seconds: int) -> int:
@@ -205,6 +219,7 @@ class GuidesCommittee(commands.Cog):
         self.bot.get_command("fareply").add_check(check)
         self.bot.get_command("freply").add_check(check)
         self.bot.get_command("close").add_check(check)
+        self.bot.redis_thingy = StrictRedisCluster(host='redis', port=7001)
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
