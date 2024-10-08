@@ -12,7 +12,7 @@ import core
 import discord
 from discord.ext import commands, tasks
 
-from aredis import StrictRedisCluster
+from redis.asyncio import AsyncClient
 
 BYPASS_LIST = [
     323473569008975872, 381170131721781248, 346382745817055242,
@@ -36,7 +36,19 @@ HEADERS = {'Authorization': BLOXLINK_API_KEY}
 EMOJI_VALUES = {True: "✅", False: "⛔"}
 K_VALUE = 0.099
 
-def get_cooldown_time(ctx):
+def new_cooldown(ctx):
+    if ctx.user.id in BYPASS_LIST:
+        return None
+
+    cooldown = get_cooldown_time(ctx)
+
+    return commands.Cooldown(1, cooldown) if cooldown is not None else None
+
+"""
+Ready to be implemented with @commands.dynamic_cooldown(new_cooldown, type=commands.BucketType.user)
+"""
+
+async def get_cooldown_time(ctx):
     user_id = ctx.user
     tickets = get_ticket_amount(user_id)
 
@@ -52,8 +64,8 @@ def get_cooldown_time(ctx):
 """
 Gets how many tickets a staff member has done
 """
-def get_ticket_amount(user) -> int:
-    pass
+async def get_ticket_amount(ctx, user_id) -> int:
+    return await ctx.bot.redis_thing.get(user_id)
 
 def unix_converter(seconds: int) -> int:
     now = datetime.now()
@@ -219,7 +231,7 @@ class GuidesCommittee(commands.Cog):
         self.bot.get_command("fareply").add_check(check)
         self.bot.get_command("freply").add_check(check)
         self.bot.get_command("close").add_check(check)
-        self.bot.redis_thingy = StrictRedisCluster(host='redis', port=7001)
+        self.bot.redis_thingy = AsyncClient(host='redis', port=7001, password="HELLO_123")
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
