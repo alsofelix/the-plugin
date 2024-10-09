@@ -722,7 +722,7 @@ class GuidesCommittee(commands.Cog):
             self.pool = pool
 
         await add_tickets(self.pool, closer.id)
-        print(f"Added 1 ticket to {self.closer}")
+        print(f"Added 1 ticket to {closer} ({closer.id}")
 
 
 
