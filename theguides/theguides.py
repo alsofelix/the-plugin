@@ -332,7 +332,7 @@ class GuidesCommittee(commands.Cog):
 
     @commands.command()
     async def tickets(self, ctx, user: discord.Member, days: int):
-        tickets = get_tickets_in_timeframe(self.pool, user.id, days)
+        tickets = await get_tickets_in_timeframe(self.pool, user.id, days)
         return await ctx.reply(f"{tickets} tickets")
 
     @core.checks.thread_only()
