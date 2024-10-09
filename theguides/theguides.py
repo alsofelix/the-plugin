@@ -58,6 +58,36 @@ async def create_database():
 
     return pool
 
+async def count_user_tickets_this_month(pool, user_id):
+    async with pool.acquire() as conn:
+        async with conn.cursor() as cur:
+            # Execute the query with user_id as a parameter
+            await cur.execute("""
+                SELECT COUNT(*) 
+                FROM tickets 
+                WHERE user_id = %s
+                AND DATE_TRUNC('month', timestamp) = DATE_TRUNC('month', CURRENT_DATE);
+            """, (user_id,))
+            # Fetch the result
+            result = await cur.fetchone()
+            # Return the count
+            return result[0]
+
+async def count_user_tickets_this_week(pool, user_id):
+    async with pool.acquire() as conn:
+        async with conn.cursor() as cur:
+            # Execute the query with user_id as a parameter
+            await cur.execute("""
+                SELECT COUNT(*) 
+                FROM tickets 
+                WHERE user_id = %s
+                AND DATE_TRUNC('week', timestamp) = DATE_TRUNC('week', CURRENT_DATE);
+            """, (user_id,))
+            # Fetch the result
+            result = await cur.fetchone()
+            # Return the count
+            return result[0]
+
 
 async def add_tickets(pool, user_id):
     async with pool.acquire() as conn:
@@ -740,8 +770,8 @@ class GuidesCommittee(commands.Cog):
                 pass
         else:
             await add_tickets(self.pool, closer.id)
-            week = await get_tickets_in_timeframe(self.pool, closer.id, 7)
-            month = await get_tickets_in_timeframe(self.pool, closer.id, 30)
+            week = await count_user_tickets_this_week(self.pool, closer.id, 7)
+            month = await count_user_tickets_this_month(self.pool, closer.id, 30)
             print(f"Added 1 ticket to {closer} ({closer.id}")
 
             try:
