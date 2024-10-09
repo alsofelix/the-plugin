@@ -777,7 +777,7 @@ class GuidesCommittee(commands.Cog):
             print(f"Added 1 ticket to {closer} ({closer.id}")
 
             try:
-                await closer.send(f"Congratulations on closing your ticket {closer}. This is you ticket number `{week}` this week and your ticket number `{month}` this month.")
+                await closer.send(f"Congratulations on closing your ticket {closer}. This is your ticket number `{week}` this week and your ticket number `{month}` this month.")
             except discord.errors.Forbidden:
                 pass
 
