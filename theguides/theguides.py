@@ -33,10 +33,12 @@ BLOXLINK_API_KEY = os.environ.get('BLOXLINK_KEY')
 SERVER_ID = "788228600079843338"
 HEADERS = {'Authorization': BLOXLINK_API_KEY}
 
+PASSWORD= os.environ.get('POSTGRES_PASSW')
+
 EMOJI_VALUES = {True: "✅", False: "⛔"}
 K_VALUE = 0.099
 
-dsn = "dbname=tickets user=cityairways host=citypostgres"
+dsn = f"dbname=tickets user=cityairways password={PASSWORD} host=citypostgres"
 
 async def create_database():
     pool = await aiopg.create_pool(dsn)
