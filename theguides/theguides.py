@@ -292,6 +292,7 @@ class GuidesCommittee(commands.Cog):
             pool = await create_database()
             self.pool = pool
             await ctx.reply("FIXED")
+            self.db_generated = True
         else:
             await ctx.reply("Nothing to fix")
 
@@ -730,6 +731,8 @@ class GuidesCommittee(commands.Cog):
         if self.db_generated is False:
             pool = await create_database()
             self.pool = pool
+            self.db_generated = True
+
 
         await add_tickets(self.pool, closer.id)
         print(f"Added 1 ticket to {closer} ({closer.id}")
