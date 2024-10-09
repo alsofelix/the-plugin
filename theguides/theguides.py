@@ -734,10 +734,20 @@ class GuidesCommittee(commands.Cog):
             self.db_generated = True
 
         if thread.recipient.id == closer.id:
-            print(type(closer))
+            try:
+                await closer.send("You closed your own ticket, it will not count towards your ticket count. A copy of this message is sent to management.")
+            except discord.errors.Forbidden:
+                pass
         else:
             await add_tickets(self.pool, closer.id)
+            week = get_tickets_in_timeframe(self.pool, closer, 7)
+            month = get_tickets_in_timeframe(self.pool, closer, 30)
             print(f"Added 1 ticket to {closer} ({closer.id}")
+
+            try:
+                await closer.send(f"Congratulations on closing your ticket {closer}. This is you ticket number `{week}` this week and your ticket number `{month}` this month.")
+            except discord.errors.Forbidden:
+                pass
 
 
 
