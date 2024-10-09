@@ -46,17 +46,18 @@ async def create_database():
             # Create the table
             await cur.execute("""
                 CREATE TABLE IF NOT EXISTS tickets (
-                id SERIAL PRIMARY KEY,
-                user_id INTEGER NOT NULL,
-                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    );
-                """)
+                    id SERIAL PRIMARY KEY,
+                    user_id INTEGER NOT NULL,
+                    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            """)
 
             # Create indexes
             await cur.execute("CREATE INDEX IF NOT EXISTS idx_timestamp ON tickets(timestamp);")
             await cur.execute("CREATE INDEX IF NOT EXISTS idx_user_id ON tickets(user_id);")
 
     return pool
+
 
 async def add_tickets(pool, user_id):
     async with pool.acquire() as conn:
