@@ -460,6 +460,7 @@ class GuidesCommittee(commands.Cog):
             if check in i.checks:
                 print(f'REMOVING CHECK IN {i.name}')  # Some logging yh
                 i.remove_check(check)
+        await self.pool.close()
 
     @commands.command()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
