@@ -122,7 +122,7 @@ def new_cooldown(ctx):
     if ctx.user.id in BYPASS_LIST:
         return None
 
-    cooldown = get_cooldown_time(ctx)
+    cooldown = get_cooldown_time(ctx.pool, ctx)
 
     return commands.Cooldown(1, cooldown) if cooldown is not None else None
 
@@ -132,7 +132,7 @@ Ready to be implemented with @commands.dynamic_cooldown(new_cooldown, type=comma
 
 async def get_cooldown_time(pool, ctx):
     user_id = ctx.user
-    tickets = get_tickets_in_timeframe(pool, user_id, 7)
+    tickets = await count_user_tickets_this_week(pool, user_id)
 
     if 5 < tickets < 36.6:
         time = math.exp(K_VALUE*tickets)
