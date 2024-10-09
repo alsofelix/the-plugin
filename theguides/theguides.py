@@ -740,8 +740,8 @@ class GuidesCommittee(commands.Cog):
                 pass
         else:
             await add_tickets(self.pool, closer.id)
-            week = await get_tickets_in_timeframe(self.pool, closer, 7)
-            month = await get_tickets_in_timeframe(self.pool, closer, 30)
+            week = await get_tickets_in_timeframe(self.pool, closer.id, 7)
+            month = await get_tickets_in_timeframe(self.pool, closer.id, 30)
             print(f"Added 1 ticket to {closer} ({closer.id}")
 
             try:
