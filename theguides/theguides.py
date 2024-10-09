@@ -733,9 +733,11 @@ class GuidesCommittee(commands.Cog):
             self.pool = pool
             self.db_generated = True
 
-
-        await add_tickets(self.pool, closer.id)
-        print(f"Added 1 ticket to {closer} ({closer.id}")
+        if thread.recipient.id == closer.id:
+            print(type(closer))
+        else:
+            await add_tickets(self.pool, closer.id)
+            print(f"Added 1 ticket to {closer} ({closer.id}")
 
 
 
