@@ -284,7 +284,7 @@ class GuidesCommittee(commands.Cog):
 
             await ctx.send(embed=embed)
         else:
-            super().cog_command_error(ctx, error)
+            await super().cog_command_error(ctx, error)
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
