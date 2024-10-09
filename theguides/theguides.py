@@ -286,6 +286,16 @@ class GuidesCommittee(commands.Cog):
         else:
             raise error
 
+    @commands.command()
+    async def fix(self, ctx):
+        if self.db_generated is False:
+            pool = await create_database()
+            self.pool = pool
+            await ctx.reply("FIXED")
+        else:
+            await ctx.reply("Nothing to fix")
+
+
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
     @commands.cooldown(1, 900, commands.BucketType.user)
