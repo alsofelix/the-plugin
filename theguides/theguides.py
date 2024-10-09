@@ -98,9 +98,9 @@ def new_cooldown(ctx):
 Ready to be implemented with @commands.dynamic_cooldown(new_cooldown, type=commands.BucketType.user)
 """
 
-async def get_cooldown_time(ctx):
+async def get_cooldown_time(pool, ctx):
     user_id = ctx.user
-    tickets = get_ticket_amount(user_id)
+    tickets = get_tickets_in_timeframe(pool, user_id, 7)
 
     if 5 < tickets < 36.6:
         time = math.exp(K_VALUE*tickets)
@@ -111,11 +111,6 @@ async def get_cooldown_time(ctx):
 
     return time
 
-"""
-Gets how many tickets a staff member has done
-"""
-async def get_ticket_amount(ctx, user_id) -> int:
-    return await ctx.bot.redis_thing.get(user_id)
 
 def unix_converter(seconds: int) -> int:
     now = datetime.now()
@@ -334,6 +329,11 @@ class GuidesCommittee(commands.Cog):
                 colour="red"
             )
             await ctx.send(embed=embed)
+
+    @commands.command()
+    async def tickets(self, ctx, user: discord.Member, days: int):
+        tickets = get_tickets_in_timeframe(self.pool, user.id, days)
+        return await ctx.reply(f"{tickets} tickets")
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
