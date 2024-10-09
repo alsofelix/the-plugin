@@ -772,8 +772,8 @@ class GuidesCommittee(commands.Cog):
                 pass
         else:
             await add_tickets(self.pool, closer.id)
-            week = await count_user_tickets_this_week(self.pool, closer.id, 7)
-            month = await count_user_tickets_this_month(self.pool, closer.id, 30)
+            week = await count_user_tickets_this_week(self.pool, closer.id)
+            month = await count_user_tickets_this_month(self.pool, closer.id)
             print(f"Added 1 ticket to {closer} ({closer.id}")
 
             try:
