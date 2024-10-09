@@ -47,7 +47,7 @@ async def create_database():
             await cur.execute("""
                 CREATE TABLE IF NOT EXISTS tickets (
                     id SERIAL PRIMARY KEY,
-                    user_id INTEGER NOT NULL,
+                    user_id BIGINT NOT NULL,
                     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
             """)
