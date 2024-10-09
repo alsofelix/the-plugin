@@ -721,7 +721,8 @@ class GuidesCommittee(commands.Cog):
             pool = await create_database()
             self.pool = pool
 
-        print(closer, closer.id)
+        await add_tickets(self.pool, closer.id)
+        print(f"Added 1 ticket to {self.closer}")
 
 
 
