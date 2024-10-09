@@ -12,7 +12,8 @@ import core
 import discord
 from discord.ext import commands, tasks
 
-from aiopg import connect
+import aiopg
+
 BYPASS_LIST = [
     323473569008975872, 381170131721781248, 346382745817055242,
     601095665061199882, 211368856839520257,
