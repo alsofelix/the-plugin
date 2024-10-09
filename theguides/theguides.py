@@ -43,12 +43,6 @@ async def create_database():
 
     async with pool.acquire() as conn:
         async with conn.cursor() as cur:
-            # Note: Executing CREATE DATABASE may require a separate connection or elevated permissions
-            await cur.execute("CREATE DATABASE IF NOT EXISTS tickets;")
-
-            # Switch to the new database if necessary
-            await cur.execute("USE tickets;")
-
             # Create the table
             await cur.execute("""
                 CREATE TABLE IF NOT EXISTS tickets (
