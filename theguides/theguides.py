@@ -1,24 +1,23 @@
 __author__ = "Felix"
 
 import asyncio
-import math
 import json
+import math
 import os
 import re
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
+
 import aiohttp
+import aiopg
 import core
 import discord
 from discord.ext import commands, tasks
 
-import aiopg
-
 BYPASS_LIST = [
     323473569008975872, 381170131721781248, 346382745817055242,
-    601095665061199882, 211368856839520257,
-    767824073186869279, 697444795785674783,
-    249568050951487499
+    601095665061199882, 211368856839520257, 767824073186869279,
+    697444795785674783, 249568050951487499
 ]
 
 UNITS = {
@@ -38,6 +37,7 @@ K_VALUE = 0.099
 
 dsn = "dbname=tickets user=cityairways password=MalvinasArgentinas host=citypostgres"
 
+
 async def create_database():
     pool = await aiopg.create_pool(dsn)
 
@@ -53,8 +53,11 @@ async def create_database():
             """)
 
             # Create indexes
-            await cur.execute("CREATE INDEX IF NOT EXISTS idx_timestamp ON tickets(timestamp);")
-            await cur.execute("CREATE INDEX IF NOT EXISTS idx_user_id ON tickets(user_id);")
+            await cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_timestamp ON tickets(timestamp);"
+            )
+            await cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_user_id ON tickets(user_id);")
 
     return pool
 
@@ -66,9 +69,8 @@ async def add_tickets(pool, user_id):
                 """
                 INSERT INTO tickets (user_id)
                 VALUES (%s);
-                """,
-                (user_id)
-            )
+                """, (user_id))
+
 
 async def get_tickets_in_timeframe(pool, user_id, days):
     async with pool.acquire() as conn:
@@ -77,13 +79,9 @@ async def get_tickets_in_timeframe(pool, user_id, days):
                 """
                 SELECT COUNT(*) FROM tickets
                 WHERE user_id = %s AND timestamp >= NOW() - INTERVAL '%s days';
-                """,
-                (user_id, days)
-            )
+                """, (user_id, days))
             result = await cur.fetchone()
             return result[0]
-
-
 
 
 def new_cooldown(ctx):
@@ -94,16 +92,18 @@ def new_cooldown(ctx):
 
     return commands.Cooldown(1, cooldown) if cooldown is not None else None
 
+
 """
 Ready to be implemented with @commands.dynamic_cooldown(new_cooldown, type=commands.BucketType.user)
 """
+
 
 async def get_cooldown_time(ctx):
     user_id = ctx.user
     tickets = get_ticket_amount(user_id)
 
     if 5 < tickets < 36.6:
-        time = math.exp(K_VALUE*tickets)
+        time = math.exp(K_VALUE * tickets)
     else:
         time = math.exp(K_VALUE * 36.6)
 
@@ -111,17 +111,22 @@ async def get_cooldown_time(ctx):
 
     return time
 
+
 """
 Gets how many tickets a staff member has done
 """
+
+
 async def get_ticket_amount(ctx, user_id) -> int:
     return await ctx.bot.redis_thing.get(user_id)
+
 
 def unix_converter(seconds: int) -> int:
     now = datetime.now()
     then = now + timedelta(seconds=seconds)
 
     return int(then.timestamp())
+
 
 def convert_to_seconds(text: str) -> int:
     return int(
@@ -170,7 +175,8 @@ class DropDownChannels(discord.ui.Select):
         category_id = channel_options[self.values[0]]
         category = interaction.guild.get_channel(int(category_id))
 
-        await interaction.channel.edit(category=category, sync_permissions=True)
+        await interaction.channel.edit(category=category,
+                                       sync_permissions=True)
 
         await interaction.response.edit_message(
             content="Moved channel successfully", view=None)
@@ -222,9 +228,15 @@ def EmbedMaker(ctx, **kwargs):
         color = colours[kwargs["colour"].lower()]
         del kwargs["colour"]
     e = discord.Embed(**kwargs, colour=color)
- #   e.set_image(url=THUMBNAIL)
-    e.set_footer(text="City Airways", icon_url="https://cdn.discordapp.com/icons/788228600079843338/21fb48653b571db2d1801e29c6b2eb1d.png?size=4096")
+    #   e.set_image(url=THUMBNAIL)
+    e.set_footer(
+        text="City Airways",
+        icon_url=
+        "https://cdn.discordapp.com/icons/788228600079843338/21fb48653b571db2d1801e29c6b2eb1d.png?size=4096"
+    )
     return e
+
+
 #
 
 MODS = {
@@ -285,7 +297,12 @@ class GuidesCommittee(commands.Cog):
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            embed = EmbedMaker(ctx, title="On Cooldown", description=f"You can use this command again <t:{unix_converter(error.retry_after)}:R>", colour="red")
+            embed = EmbedMaker(
+                ctx,
+                title="On Cooldown",
+                description=
+                f"You can use this command again <t:{unix_converter(error.retry_after)}:R>",
+                colour="red")
 
             await ctx.send(embed=embed)
         else:
@@ -331,8 +348,7 @@ class GuidesCommittee(commands.Cog):
                 title="Already Claimed",
                 description=
                 f"Already claimed by {(f'<@{claimer}>') if claimer != ctx.author.id else 'you dumbass'}",
-                colour="red"
-            )
+                colour="red")
             await ctx.send(embed=embed)
 
     @core.checks.thread_only()
@@ -716,15 +732,13 @@ class GuidesCommittee(commands.Cog):
         await ctx.message.reply(embed=embed)
 
     @commands.Cog.listener()
-    async def on_thread_close(self, thread, closer, silent, delete_channel, message, scheduled):
+    async def on_thread_close(self, thread, closer, silent, delete_channel,
+                              message, scheduled):
         if self.db_generated is False:
             pool = await create_database()
             self.pool = pool
 
         print(closer, closer.id)
-
-
-
 
 
 async def setup(bot):
