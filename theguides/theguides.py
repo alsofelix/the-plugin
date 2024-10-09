@@ -344,7 +344,7 @@ class GuidesCommittee(commands.Cog):
     @commands.command()
     async def tickets(self, ctx, user: discord.Member, days: int):
         tickets = await get_tickets_in_timeframe(self.pool, user.id, days)
-        return await ctx.reply(f"{tickets} tickets")
+        return await ctx.reply(f"{tickets} {'tickets' if tickets > 1 else 'ticket'} in last {days} days")
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
