@@ -36,7 +36,7 @@ HEADERS = {'Authorization': BLOXLINK_API_KEY}
 EMOJI_VALUES = {True: "✅", False: "⛔"}
 K_VALUE = 0.099
 
-dsn = "dbname=tickets user=cityairways password=MalvinasArgentinas host=citypostgres"
+dsn = "dbname=tickets user=cityairways host=citypostgres"
 
 async def create_database():
     pool = await aiopg.create_pool(dsn)
