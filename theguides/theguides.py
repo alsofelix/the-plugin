@@ -12,8 +12,7 @@ import core
 import discord
 from discord.ext import commands, tasks
 
-from redis.asyncio import AsyncClient
-
+from aiopg import connect
 BYPASS_LIST = [
     323473569008975872, 381170131721781248, 346382745817055242,
     601095665061199882, 211368856839520257,
@@ -35,6 +34,61 @@ HEADERS = {'Authorization': BLOXLINK_API_KEY}
 
 EMOJI_VALUES = {True: "✅", False: "⛔"}
 K_VALUE = 0.099
+
+dsn = "dbname=tickets user=cityairways password=MalvinasArgentinas host=citypostgres"
+
+async def create_database():
+    pool = await aiopg.create_pool(dsn)
+
+    async with pool.acquire() as conn:
+        async with conn.cursor() as cur:
+            # Note: Executing CREATE DATABASE may require a separate connection or elevated permissions
+            await cur.execute("CREATE DATABASE IF NOT EXISTS tickets;")
+
+            # Switch to the new database if necessary
+            await cur.execute("USE tickets;")
+
+            # Create the table
+            await cur.execute("""
+                CREATE TABLE IF NOT EXISTS tickets (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER NOT NULL,
+                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    );
+                """)
+
+            # Create indexes
+            await cur.execute("CREATE INDEX IF NOT EXISTS idx_timestamp ON tickets(timestamp);")
+            await cur.execute("CREATE INDEX IF NOT EXISTS idx_user_id ON tickets(user_id);")
+
+    return pool
+
+async def add_tickets(pool, user_id):
+    async with pool.acquire() as conn:
+        async with conn.cursor() as cur:
+            await cur.execute(
+                """
+                INSERT INTO tickets (user_id)
+                VALUES (%s);
+                """,
+                (user_id)
+            )
+
+async def get_tickets_in_timeframe(pool, user_id, days):
+    async with pool.acquire() as conn:
+        async with conn.cursor() as cur:
+            await cur.execute(
+                """
+                SELECT COUNT(*) FROM tickets
+                WHERE user_id = %s AND timestamp >= NOW() - INTERVAL '%s days';
+                """,
+                (user_id, days)
+            )
+            result = await cur.fetchone()
+            return result[0]
+
+
+
 
 def new_cooldown(ctx):
     if ctx.user.id in BYPASS_LIST:
@@ -231,7 +285,7 @@ class GuidesCommittee(commands.Cog):
         self.bot.get_command("fareply").add_check(check)
         self.bot.get_command("freply").add_check(check)
         self.bot.get_command("close").add_check(check)
-        self.bot.redis_thingy = AsyncClient(host='redis', port=7001, password="HELLO_123")
+        self.db_generated = False
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
@@ -663,6 +717,17 @@ class GuidesCommittee(commands.Cog):
             "Abbi**\n- Principal Regulatory Compliance Manager for User "
             "Conduct and Content Moderation: **Chairwoman Abbi**")
         await ctx.message.reply(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_thread_close(self, thread, closer, silent, delete_channel, message, scheduled):
+        if self.db_generated is False:
+            pool = await create_database()
+            self.pool = pool
+
+        print(closer, closer.id)
+
+
+
 
 
 async def setup(bot):
