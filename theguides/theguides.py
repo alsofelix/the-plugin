@@ -67,7 +67,7 @@ async def add_tickets(pool, user_id):
                 INSERT INTO tickets (user_id)
                 VALUES (%s);
                 """,
-                (user_id)
+                (user_id,)
             )
 
 async def get_tickets_in_timeframe(pool, user_id, days):
