@@ -1,14 +1,14 @@
 __author__ = "Felix"
 
 import asyncio
+import csv
 import json
 import math
 import os
 import re
+import uuid
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
-import csv
-import uuid
 
 import aiohttp
 import aiopg
@@ -62,9 +62,10 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
 
     print("CSV Generation requested, starting conversion for ROBLOX Usernames")
 
-    time = unix_converter(7.3*len(results))
+    time = unix_converter(7.3 * len(results))
 
-    msg = await ctx.reply(f"Started generation, estimated completion: <t:{time}:R>")
+    msg = await ctx.reply(
+        f"Started generation, estimated completion: <t:{time}:R>")
 
     for i in results:
         async with aiohttp.ClientSession() as session:
@@ -493,7 +494,6 @@ class GuidesCommittee(commands.Cog):
         await ctx.message.clear_reactions()
         with open(file, 'rb') as f:
             await ctx.send(file=discord.File(f, filename=file))
-
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
