@@ -467,7 +467,7 @@ class GuidesCommittee(commands.Cog):
     @commands.command()
     async def export(self, ctx):
         async with ctx.typing():
-            file = rank_users_by_tickets_this_month_to_csv(self.pool)
+            file = await rank_users_by_tickets_this_month_to_csv(self.pool)
             print(file)
             with open(file) as f:
                 await ctx.send(file=discord.File(f, filename=file))
@@ -561,6 +561,7 @@ class GuidesCommittee(commands.Cog):
                 print(f'REMOVING CHECK IN {i.name}')  # Some logging yh
                 i.remove_check(check)
         await self.pool.close()
+        print("Closed pool")
 
     @commands.command()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
