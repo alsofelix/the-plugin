@@ -467,7 +467,7 @@ class GuidesCommittee(commands.Cog):
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
     @commands.command()
     async def export(self, ctx):
-        async with ctx.channel.Typing():
+        async with ctx.typing():
             file = rank_users_by_tickets_this_month_to_csv(self.pool)
             print(file)
             with open(file) as f:
