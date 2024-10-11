@@ -43,7 +43,7 @@ dsn = f"dbname=tickets user=cityairways password={PASSWORD} host=citypostgres"
 
 
 async def rank_users_by_tickets_this_month_to_csv(pool):
-    filename = f"monthly_ranking{uuid.uuid4()}.csv"
+    filename = f"monthly_ranking_{uuid.uuid4()}.csv"
     # Fetch the ranking data
     async with pool.acquire() as conn:
         async with conn.cursor() as cur:
