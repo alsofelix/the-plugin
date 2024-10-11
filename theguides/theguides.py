@@ -463,8 +463,7 @@ class GuidesCommittee(commands.Cog):
             )
             await ctx.message.reply(embed=e)
 
-    @core.checks.thread_only()
-    @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
+    @core.checks.has_permissions(core.models.PermissionLevel.OWNER)
     @commands.command()
     async def export(self, ctx):
         async with ctx.typing():
