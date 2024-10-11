@@ -62,7 +62,7 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
 
     print("CSV Generation requested, starting conversion for ROBLOX Usernames")
 
-    time = unix_converter(5*len(results))
+    time = unix_converter(7.3*len(results))
 
     msg = await ctx.reply(f"Started generation, estimated completion: <t:{time}:R>")
 
