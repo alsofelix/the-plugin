@@ -469,6 +469,7 @@ class GuidesCommittee(commands.Cog):
     async def export(self, ctx):
         async with ctx.channel.Typing():
             file = rank_users_by_tickets_this_month_to_csv(self.pool)
+            print(file)
             with open(file) as f:
                 await ctx.send(file=discord.File(f, filename=file))
         return
