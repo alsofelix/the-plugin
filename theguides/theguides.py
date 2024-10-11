@@ -7,6 +7,8 @@ import os
 import re
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
+import csv
+import uuid
 
 import aiohttp
 import aiopg
@@ -38,6 +40,34 @@ EMOJI_VALUES = {True: "✅", False: "⛔"}
 K_VALUE = 0.099
 
 dsn = f"dbname=tickets user=cityairways password={PASSWORD} host=citypostgres"
+
+
+async def rank_users_by_tickets_this_month_to_csv(pool):
+    filename = f"monthly_ranking{uuid.uuid4()}.csv"
+    # Fetch the ranking data
+    async with pool.acquire() as conn:
+        async with conn.cursor() as cur:
+            await cur.execute("""
+                SELECT user_id,
+                       COUNT(*) AS ticket_count,
+                       RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+                FROM tickets
+                WHERE DATE_TRUNC('month', timestamp) = DATE_TRUNC('month', CURRENT_DATE)
+                GROUP BY user_id
+                ORDER BY ticket_count DESC;
+            """)
+            results = await cur.fetchall()
+
+    # Write results to a CSV file
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["User ID", "Ticket Count", "Rank"])
+        for row in results:
+            writer.writerow(row)
+
+    print(f"Monthly ranking saved to {filename}")
+
+    return filename
 
 
 async def create_database():
@@ -432,6 +462,16 @@ class GuidesCommittee(commands.Cog):
                 f"You're not the claimer of this thread, don't anger chairwoman abbi"
             )
             await ctx.message.reply(embed=e)
+
+    @core.checks.thread_only()
+    @core.checks.has_permissions(core.models.PermissionLevel.OWNER)
+    @commands.command()
+    async def export(self, ctx):
+        async with ctx.channel.Typing():
+            file = rank_users_by_tickets_this_month_to_csv(self.pool)
+            with open(file) as f:
+                await ctx.send(file=discord.File(f, filename=file))
+        return
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
