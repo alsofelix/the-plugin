@@ -58,6 +58,8 @@ async def rank_users_by_tickets_this_month_to_csv(pool):
             """)
             results = await cur.fetchall()
 
+    print(type(results), results)
+
     for i in results:
         async with aiohttp.ClientSession() as session:
             async with session.get(
