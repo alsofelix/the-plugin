@@ -469,7 +469,7 @@ class GuidesCommittee(commands.Cog):
         async with ctx.typing():
             file = await rank_users_by_tickets_this_month_to_csv(self.pool)
             print(file)
-            with open(file) as f:
+            with open(file, 'rb') as f:
                 await ctx.send(file=discord.File(f, filename=file))
         return
 
