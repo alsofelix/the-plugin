@@ -1,14 +1,14 @@
 __author__ = "Felix"
 
 import asyncio
+import csv
 import json
 import math
 import os
 import re
+import uuid
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
-import csv
-import uuid
 
 import aiohttp
 import aiopg
