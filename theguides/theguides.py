@@ -67,7 +67,9 @@ async def rank_users_by_tickets_this_month_to_csv(pool):
                     headers=HEADERS) as res:
                 roblox_data = await res.json()
                 roblox_name = roblox_data["resolved"]["roblox"]["name"]
+                i = list(i)
                 i[0] = roblox_name
+                i = tuple(i)
 
     # Write results to a CSV file
     with open(filename, mode='w', newline='') as file:
