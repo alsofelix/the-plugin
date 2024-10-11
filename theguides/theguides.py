@@ -489,7 +489,7 @@ class GuidesCommittee(commands.Cog):
     @commands.command()
     async def export(self, ctx):
         await ctx.message.add_reaction("<a:loading_f:1249799401958936576>")
-        file = await rank_users_by_tickets_this_month_to_csv(self.pool)
+        file = await rank_users_by_tickets_this_month_to_csv(self.pool, ctx)
         await ctx.message.clear_reactions()
         with open(file, 'rb') as f:
             await ctx.send(file=discord.File(f, filename=file))
