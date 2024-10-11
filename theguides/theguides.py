@@ -58,10 +58,19 @@ async def rank_users_by_tickets_this_month_to_csv(pool):
             """)
             results = await cur.fetchall()
 
+    for i in results:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                    f"https://api.blox.link/v4/public/guilds/788228600079843338/discord-to-roblox/{i[0]}",
+                    headers=HEADERS) as res:
+                roblox_data = await res.json()
+                roblox_name = roblox_data["resolved"]["roblox"]["name"]
+                i[0] = roblox_name
+
     # Write results to a CSV file
     with open(filename, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(["User ID", "Ticket Count", "Rank"])
+        writer.writerow(["ROBLOX Username", "Ticket Count", "Rank"])
         for row in results:
             writer.writerow(row)
 
