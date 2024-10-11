@@ -42,7 +42,7 @@ K_VALUE = 0.099
 dsn = f"dbname=tickets user=cityairways password={PASSWORD} host=citypostgres"
 
 
-async def rank_users_by_tickets_this_month_to_csv(pool):
+async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
     filename = f"monthly_ranking_{uuid.uuid4()}.csv"
     # Fetch the ranking data
     async with pool.acquire() as conn:
@@ -60,6 +60,12 @@ async def rank_users_by_tickets_this_month_to_csv(pool):
 
     results = [list(i) for i in results]
 
+    print("CSV Generation requested, starting conversion for ROBLOX Usernames")
+
+    time = unix_converter(5*60*len(results))
+
+    msg = await ctx.reply(f"Started generation, estimated completion: <t:{time}:R>")
+
     for i in results:
         async with aiohttp.ClientSession() as session:
             async with session.get(
@@ -68,6 +74,8 @@ async def rank_users_by_tickets_this_month_to_csv(pool):
                 await asyncio.sleep(5)
                 roblox_data = await res.json()
                 roblox_name = roblox_data["resolved"]["roblox"]["name"]
+                print(f"Resolved: {roblox_name} for DISCORD_ID: {i[0]}")
+
                 i[0] = roblox_name
 
     # Write results to a CSV file
@@ -78,6 +86,8 @@ async def rank_users_by_tickets_this_month_to_csv(pool):
             writer.writerow(row)
 
     print(f"Monthly ranking saved to {filename}")
+
+    await msg.delete()
 
     return filename
 
