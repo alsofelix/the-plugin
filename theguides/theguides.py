@@ -58,18 +58,17 @@ async def rank_users_by_tickets_this_month_to_csv(pool):
             """)
             results = await cur.fetchall()
 
-    print(type(results), results)
+    results = [list(i) for i in results]
 
     for i in results:
         async with aiohttp.ClientSession() as session:
             async with session.get(
                     f"https://api.blox.link/v4/public/guilds/788228600079843338/discord-to-roblox/{i[0]}",
                     headers=HEADERS) as res:
+                await asyncio.sleep(5)
                 roblox_data = await res.json()
                 roblox_name = roblox_data["resolved"]["roblox"]["name"]
-                i = list(i)
                 i[0] = roblox_name
-                i = tuple(i)
 
     # Write results to a CSV file
     with open(filename, mode='w', newline='') as file:
@@ -479,12 +478,12 @@ class GuidesCommittee(commands.Cog):
     @core.checks.has_permissions(core.models.PermissionLevel.OWNER)
     @commands.command()
     async def export(self, ctx):
-        async with ctx.typing():
-            file = await rank_users_by_tickets_this_month_to_csv(self.pool)
-            print(file)
-            with open(file, 'rb') as f:
-                await ctx.send(file=discord.File(f, filename=file))
-        return
+        await ctx.message.add_reaction("<a:loading_f:1249799401958936576>")
+        file = await rank_users_by_tickets_this_month_to_csv(self.pool)
+        await ctx.message.clear_reactions()
+        with open(file, 'rb') as f:
+            await ctx.send(file=discord.File(f, filename=file))
+
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
