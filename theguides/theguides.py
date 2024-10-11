@@ -1,14 +1,14 @@
 __author__ = "Felix"
 
 import asyncio
+import csv
 import json
 import math
 import os
 import re
+import uuid
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
-import csv
-import uuid
 
 import aiohttp
 import aiopg
@@ -483,7 +483,6 @@ class GuidesCommittee(commands.Cog):
         await ctx.message.clear_reactions()
         with open(file, 'rb') as f:
             await ctx.send(file=discord.File(f, filename=file))
-
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
