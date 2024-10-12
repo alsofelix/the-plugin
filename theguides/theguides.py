@@ -71,7 +71,7 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
             async with session.get(
                     f"https://api.blox.link/v4/public/guilds/788228600079843338/discord-to-roblox/{i[0]}",
                     headers=HEADERS) as res:
-                await asyncio.sleep(5)
+                # await asyncio.sleep(5)
                 roblox_data = await res.json()
                 print(i[0])
                 print(roblox_data)
