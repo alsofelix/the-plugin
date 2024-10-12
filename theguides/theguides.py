@@ -77,8 +77,8 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
                     if roblox_data["error"] == "Unknown Member":
                         await ctx.channel.send(f"Discord ID: {i[0]} not in discord, <@{i[0]}> will not be included in pay, but if you need his ticket amount it is: `{i[1]}`")
                         print(f"{i[0]} NOT IN DISCORD, NOT INCLUDED IN CSV")
-                        break
-                print(roblox_data)
+                        continue
+                #print(roblox_data)
                 roblox_name = roblox_data["resolved"]["roblox"]["name"]
                 print(f"Resolved: {roblox_name} for DISCORD_ID: {i[0]}")
 
