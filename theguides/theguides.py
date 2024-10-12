@@ -62,7 +62,7 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
 
     print("CSV Generation requested, starting conversion for ROBLOX Usernames")
 
-    time = unix_converter(1.3*len(results))
+    time = unix_converter(2.3*len(results))
 
     msg = await ctx.reply(f"Started generation, estimated completion: <t:{time}:R>")
 
@@ -577,6 +577,11 @@ class GuidesCommittee(commands.Cog):
             await ctx.reply(embed=e)
 
     async def cog_unload(self):
+        try:
+            print("Closing pool")
+            await self.pool.close()
+        except Exception:
+            print("Error closing pool")
         cmds = [
             self.bot.get_command("reply"),
             self.bot.get_command("freply"),
@@ -588,8 +593,7 @@ class GuidesCommittee(commands.Cog):
             if check in i.checks:
                 print(f'REMOVING CHECK IN {i.name}')  # Some logging yh
                 i.remove_check(check)
-        await self.pool.close()
-        print("Closed pool")
+
 
     @commands.command()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
