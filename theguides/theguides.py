@@ -863,6 +863,8 @@ class GuidesCommittee(commands.Cog):
                 await closer.send(
                     f"Congratulations on closing your ticket {closer}. This is your ticket number `{week}` this week and your ticket number `{month}` this month."
                 )
+                if str(closer.id) == "1208702357425102880":
+                    await closer.send("Hi Ben, this is a special message I have in store for when you close a ticket. I just want to extend my heartfelt congratulations, because this job you do is impressive.")
             except discord.errors.Forbidden:
                 pass
 
