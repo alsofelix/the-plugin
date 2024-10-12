@@ -73,6 +73,8 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
                     headers=HEADERS) as res:
                 await asyncio.sleep(5)
                 roblox_data = await res.json()
+                print(i[0])
+                print(roblox_data)
                 roblox_name = roblox_data["resolved"]["roblox"]["name"]
                 print(f"Resolved: {roblox_name} for DISCORD_ID: {i[0]}")
 
