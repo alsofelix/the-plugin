@@ -62,7 +62,7 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
 
     print("CSV Generation requested, starting conversion for ROBLOX Usernames")
 
-    time = unix_converter(7.3*len(results))
+    time = unix_converter(1.3*len(results))
 
     msg = await ctx.reply(f"Started generation, estimated completion: <t:{time}:R>")
 
@@ -71,10 +71,13 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
             async with session.get(
                     f"https://api.blox.link/v4/public/guilds/788228600079843338/discord-to-roblox/{i[0]}",
                     headers=HEADERS) as res:
-                # await asyncio.sleep(5)
+                await asyncio.sleep(1)
                 roblox_data = await res.json()
-                print(i[0])
-                print(roblox_data)
+                if "error" in roblox_data:
+                    if roblox_data["error"] == "Unkown Member":
+                        await ctx.channel.send(f"Discord ID: {i[0]} not in discord, <@{i[0]}> will not be included in pay, but if you need his ticket amount it is: `{i[1]}`")
+                        break
+                print(round)
                 roblox_name = roblox_data["resolved"]["roblox"]["name"]
                 print(f"Resolved: {roblox_name} for DISCORD_ID: {i[0]}")
 
