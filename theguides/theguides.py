@@ -1,14 +1,14 @@
 __author__ = "Felix"
 
 import asyncio
+import csv
 import json
 import math
 import os
 import re
+import uuid
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
-import csv
-import uuid
 
 import aiohttp
 import aiopg
@@ -62,9 +62,10 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
 
     print("CSV Generation requested, starting conversion for ROBLOX Usernames")
 
-    time = unix_converter(2.3*len(results))
+    time = unix_converter(2.3 * len(results))
 
-    msg = await ctx.reply(f"Started generation, estimated completion: <t:{time}:R>")
+    msg = await ctx.reply(
+        f"Started generation, estimated completion: <t:{time}:R>")
 
     for i in results:
         async with aiohttp.ClientSession() as session:
@@ -75,7 +76,9 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
                 roblox_data = await res.json()
                 if "error" in roblox_data:
                     if roblox_data["error"] == "Unknown Member":
-                        await ctx.channel.send(f"Discord ID: {i[0]} not in discord, <@{i[0]}> will not be included in pay, but if you need his ticket amount it is: `{i[1]}`")
+                        await ctx.channel.send(
+                            f"Discord ID: {i[0]} not in discord, <@{i[0]}> will not be included in pay, but if you need his ticket amount it is: `{i[1]}`"
+                        )
                         print(f"{i[0]} NOT IN DISCORD, NOT INCLUDED IN CSV")
                         continue
                 #print(roblox_data)
@@ -500,7 +503,6 @@ class GuidesCommittee(commands.Cog):
         with open(file, 'rb') as f:
             await ctx.send(file=discord.File(f, filename=file))
 
-
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
     @commands.command()
@@ -590,7 +592,6 @@ class GuidesCommittee(commands.Cog):
                 i.remove_check(check)
         await self.pool.terminate()
         print("Bye Bye pool")
-
 
     @commands.command()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
@@ -871,7 +872,9 @@ class GuidesCommittee(commands.Cog):
                     f"Congratulations on closing your ticket {closer}. This is your ticket number `{week}` this week and your ticket number `{month}` this month."
                 )
                 if str(closer.id) == "1208702357425102880":
-                    await closer.send("Hi Ben, this is a special message I have in store for when you close a ticket. I just want to extend my heartfelt congratulations, because this job you do is impressive.")
+                    await closer.send(
+                        "Hi Ben, this is a special message I have in store for when you close a ticket. I just want to extend my heartfelt congratulations, because this job you do is impressive."
+                    )
             except discord.errors.Forbidden:
                 pass
 
