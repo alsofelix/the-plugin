@@ -577,11 +577,6 @@ class GuidesCommittee(commands.Cog):
             await ctx.reply(embed=e)
 
     async def cog_unload(self):
-        try:
-            print("Closing pool")
-            await self.pool.close()
-        except Exception as e:
-            print("Error closing pool" + e)
         cmds = [
             self.bot.get_command("reply"),
             self.bot.get_command("freply"),
@@ -593,6 +588,8 @@ class GuidesCommittee(commands.Cog):
             if check in i.checks:
                 print(f'REMOVING CHECK IN {i.name}')  # Some logging yh
                 i.remove_check(check)
+        await self.pool.terminate()
+        print("Bye Bye pool")
 
 
     @commands.command()
