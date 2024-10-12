@@ -580,8 +580,8 @@ class GuidesCommittee(commands.Cog):
         try:
             print("Closing pool")
             await self.pool.close()
-        except Exception:
-            print("Error closing pool")
+        except Exception as e:
+            print("Error closing pool" + e)
         cmds = [
             self.bot.get_command("reply"),
             self.bot.get_command("freply"),
