@@ -66,6 +66,8 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
 
     msg = await ctx.reply(f"Started generation, estimated completion: <t:{time}:R>")
 
+    rm = []
+
     for i in results:
         async with aiohttp.ClientSession() as session:
             async with session.get(
@@ -77,13 +79,16 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
                     if roblox_data["error"] == "Unknown Member":
                         await ctx.channel.send(f"Discord ID: {i[0]} not in discord, <@{i[0]}> will not be included in pay, but if you need his ticket amount it is: `{i[1]}`")
                         print(f"{i[0]} NOT IN DISCORD, NOT INCLUDED IN CSV")
-                        results.remove(i)
+                        rm.append(i)
                         continue
                 #print(roblox_data)
                 roblox_name = roblox_data["resolved"]["roblox"]["name"]
                 print(f"Resolved: {roblox_name} for DISCORD_ID: {i[0]}")
 
                 i[0] = roblox_name
+
+    for i in rm:
+        results.remove(i)
 
     # Write results to a CSV file
     with open(filename, mode='w', newline='') as file:
