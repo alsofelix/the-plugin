@@ -497,7 +497,7 @@ class GuidesCommittee(commands.Cog):
             )
             await ctx.message.reply(embed=e)
 
-    @core.checks.has_permissions(core.models.PermissionLevel.OWNER)
+    @core.checks.has_permissions(core.models.PermissionLevel.MODERATOR)
     @commands.command()
     async def export(self, ctx):
         await ctx.message.add_reaction("<a:loading_f:1249799401958936576>")
