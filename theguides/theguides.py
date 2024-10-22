@@ -188,7 +188,9 @@ def new_cooldown(ctx):
     # if ctx.author.id in BYPASS_LIST:
     #    return None
 
-    cooldown = asyncio.run(get_cooldown_time(ctx.bot.pool, ctx))
+    loop = asyncio.get_running_loop()
+    cooldown = loop.create_task(get_cooldown_time(ctx.bot.pool, ctx))
+    loop.run_until_complete(cooldown)
 
     return commands.Cooldown(1, cooldown) if cooldown is not None else None
 
