@@ -197,7 +197,9 @@ def new_cooldown(ctx):
     # if ctx.author.id in BYPASS_LIST:
     #    return None
 
+    print(f"cooldown")
     cooldown = get_cooldown_time(ctx.bot.sync_db, ctx)
+    print(f"coldown {cooldown}")
 
     return commands.Cooldown(1, cooldown) if cooldown is not None else None
 
