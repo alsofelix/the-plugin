@@ -209,7 +209,7 @@ Ready to be implemented with @commands.dynamic_cooldown(new_cooldown, type=comma
 """
 
 
-async def get_cooldown_time_sync(pool, ctx):
+def get_cooldown_time_sync(pool, ctx):
     try:
         user_id = ctx.author
     except Exception:
