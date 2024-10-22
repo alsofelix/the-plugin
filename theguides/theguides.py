@@ -184,11 +184,11 @@ async def get_tickets_in_timeframe(pool, user_id, days):
             return result[0]
 
 
-async def new_cooldown(ctx):
+def new_cooldown(ctx):
     # if ctx.author.id in BYPASS_LIST:
     #    return None
 
-    cooldown = await get_cooldown_time(ctx.bot.pool, ctx)
+    cooldown = asyncio.run(get_cooldown_time(ctx.bot.pool, ctx))
 
     return commands.Cooldown(1, cooldown) if cooldown is not None else None
 
