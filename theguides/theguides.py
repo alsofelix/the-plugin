@@ -189,8 +189,8 @@ def new_cooldown(ctx):
     #    return None
 
     loop = asyncio.get_running_loop()
-    cooldown = loop.create_task(get_cooldown_time(ctx.bot.pool, ctx))
-    loop.run_until_complete(cooldown)
+    future = asyncio.run_coroutine_threadsafe(get_cooldown_time(ctx.bot.pool, ctx), loop)
+    cooldown = future.result()
 
     return commands.Cooldown(1, cooldown) if cooldown is not None else None
 
