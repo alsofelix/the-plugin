@@ -185,8 +185,8 @@ async def get_tickets_in_timeframe(pool, user_id, days):
 
 
 def new_cooldown(ctx):
-    if ctx.author.id in BYPASS_LIST:
-        return None
+    # if ctx.author.id in BYPASS_LIST:
+    #    return None
 
     cooldown = get_cooldown_time(ctx.bot.pool, ctx)
 
@@ -206,7 +206,11 @@ async def get_cooldown_time(pool, ctx):
 
     tickets = await count_user_tickets_this_week(pool, user_id)
 
-    if 5 < tickets < 36.6:
+    print(tickets)
+
+    if tickets < 5:
+        return 0
+    if 5 <= tickets < 36.6:
         time = math.exp(K_VALUE * tickets)
     else:
         time = math.exp(K_VALUE * 36.6)
