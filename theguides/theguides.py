@@ -9,12 +9,15 @@ from datetime import datetime, timedelta
 from difflib import SequenceMatcher
 import csv
 import uuid
+import psycopg2
+
 
 import aiohttp
 import aiopg
 import core
 import discord
 from discord.ext import commands, tasks
+
 
 BYPASS_LIST = [
     323473569008975872, 381170131721781248, 346382745817055242,
@@ -194,12 +197,9 @@ def new_cooldown(ctx):
     # if ctx.author.id in BYPASS_LIST:
     #    return None
 
-    loop = asyncio.get_running_loop()
-    future = asyncio.run_coroutine_threadsafe(get_cooldown_time(ctx.bot.pool, ctx), loop)
-    future.add_done_callback(lambda f: handle_cooldown_result(f, ctx))
+    cooldown = get_cooldown_time(ctx.bot.sync_db, ctx)
 
-    # return commands.Cooldown(1, cooldown) if cooldown is not None else None
-    return None
+    return commands.Cooldown(1, cooldown) if cooldown is not None else None
 
 
 """
@@ -213,7 +213,15 @@ async def get_cooldown_time(pool, ctx):
     except Exception:
         user_id = ctx
 
-    tickets = await count_user_tickets_this_week(pool, user_id)
+    conn = pool
+    cursor = conn.cursor()
+
+    # Query to count user tickets for this week (replace with your actual query)
+    cursor.execute("SELECT COUNT(*) FROM tickets WHERE user_id = %s AND week = current_week()", (user_id,))
+    tickets = cursor.fetchone()[0]
+
+    cursor.close()
+    conn.close()
 
     print(tickets)
 
@@ -402,6 +410,15 @@ class GuidesCommittee(commands.Cog):
         self.bot.get_command("freply").add_check(check)
         self.bot.get_command("close").add_check(check)
         self.db_generated = False
+
+        # Synchronous database
+        self.bot.sync_db = psycopg2.connect(
+            dbname="tickets",
+            user="cityairways",
+            password=PASSWORD,
+            host="citypostgres"
+        )
+
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
