@@ -215,6 +215,7 @@ def get_cooldown_time_sync(pool, ctx):
     except Exception:
         user_id = ctx
 
+    print("yo")
     conn = pool
     cursor = conn.cursor()
 
@@ -647,6 +648,8 @@ class GuidesCommittee(commands.Cog):
             if check in i.checks:
                 print(f'REMOVING CHECK IN {i.name}')  # Some logging yh
                 i.remove_check(check)
+
+        self.bot.sync_db.close()
         await self.bot.pool.terminate()
         print("Bye Bye pool")
 
