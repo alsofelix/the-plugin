@@ -188,7 +188,7 @@ def new_cooldown(ctx):
     if ctx.user.id in BYPASS_LIST:
         return None
 
-    cooldown = get_cooldown_time(ctx.pool, ctx)
+    cooldown = get_cooldown_time(ctx.bot.pool, ctx)
 
     return commands.Cooldown(1, cooldown) if cooldown is not None else None
 
@@ -403,7 +403,7 @@ class GuidesCommittee(commands.Cog):
     async def fix(self, ctx):
         if self.db_generated is False:
             pool = await create_database()
-            self.pool = pool
+            self.bot.pool = pool
             await ctx.reply("FIXED")
             self.db_generated = True
         else:
@@ -411,7 +411,7 @@ class GuidesCommittee(commands.Cog):
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
-    @commands.cooldown(1, 900, commands.BucketType.user)
+    @commands.dynamic_cooldown(new_cooldown, type=commands.BucketType.user)
     @commands.command()
     async def claim(self, ctx):
         thread = await self.db.find_one(
@@ -454,7 +454,7 @@ class GuidesCommittee(commands.Cog):
 
     @commands.command()
     async def tickets(self, ctx, user: discord.Member, days: int):
-        tickets = await get_tickets_in_timeframe(self.pool, user.id, days)
+        tickets = await get_tickets_in_timeframe(self.bot.pool, user.id, days)
         return await ctx.reply(
             f"{tickets} {'tickets' if tickets > 1 else 'ticket'} in last {days} days"
         )
@@ -501,7 +501,7 @@ class GuidesCommittee(commands.Cog):
     @commands.command()
     async def export(self, ctx):
         await ctx.message.add_reaction("<a:loading_f:1249799401958936576>")
-        file = await rank_users_by_tickets_this_month_to_csv(self.pool, ctx)
+        file = await rank_users_by_tickets_this_month_to_csv(self.bot.pool, ctx)
         await ctx.message.clear_reactions()
         with open(file, 'rb') as f:
             await ctx.send(file=discord.File(f, filename=file))
@@ -594,7 +594,7 @@ class GuidesCommittee(commands.Cog):
             if check in i.checks:
                 print(f'REMOVING CHECK IN {i.name}')  # Some logging yh
                 i.remove_check(check)
-        await self.pool.terminate()
+        await self.bot.pool.terminate()
         print("Bye Bye pool")
 
 
@@ -856,7 +856,7 @@ class GuidesCommittee(commands.Cog):
                               message, scheduled):
         if self.db_generated is False:
             pool = await create_database()
-            self.pool = pool
+            self.bot.pool = pool
             self.db_generated = True
 
         if thread.recipient.id == closer.id:
@@ -867,14 +867,16 @@ class GuidesCommittee(commands.Cog):
             except discord.errors.Forbidden:
                 pass
         else:
-            await add_tickets(self.pool, closer.id)
-            week = await count_user_tickets_this_week(self.pool, closer.id)
-            month = await count_user_tickets_this_month(self.pool, closer.id)
+            await add_tickets(self.bot.pool, closer.id)
+            week = await count_user_tickets_this_week(self.bot.pool, closer.id)
+            month = await count_user_tickets_this_month(self.bot.pool, closer.id)
             print(f"Added 1 ticket to {closer} ({closer.id}")
+
+            cooldown = get_cooldown_time(self.bot.pool, closer.id)
 
             try:
                 await closer.send(
-                    f"Congratulations on closing your ticket {closer}. This is your ticket number `{week}` this week and your ticket number `{month}` this month."
+                    f"Congratulations on closing your ticket {closer}. This is your ticket number `{week}` this week and your ticket number `{month}` this month. Your cooldown is: {cooldown}"
                 )
                 if str(closer.id) == "1208702357425102880":
                     await closer.send("Hi Ben, this is a special message I have in store for when you close a ticket. I just want to extend my heartfelt congratulations, because this job you do is impressive.")
