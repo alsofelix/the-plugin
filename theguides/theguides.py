@@ -199,7 +199,11 @@ Ready to be implemented with @commands.dynamic_cooldown(new_cooldown, type=comma
 
 
 async def get_cooldown_time(pool, ctx):
-    user_id = ctx.author
+    try:
+        user_id = ctx.author
+    except Exception:
+        user_id = ctx
+
     tickets = await count_user_tickets_this_week(pool, user_id)
 
     if 5 < tickets < 36.6:
