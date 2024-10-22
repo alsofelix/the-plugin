@@ -1,28 +1,32 @@
 __author__ = "Felix"
 
 import asyncio
+import csv
 import json
 import math
 import os
 import re
+import uuid
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
-import csv
-import uuid
-import psycopg2
-
 
 import aiohttp
 import aiopg
 import core
 import discord
+import psycopg2
 from discord.ext import commands, tasks
 
-
 BYPASS_LIST = [
-    323473569008975872, 381170131721781248, 346382745817055242,
-    601095665061199882, 211368856839520257, 767824073186869279,
-    697444795785674783, 249568050951487499, 681368482855911471,
+    323473569008975872,
+    381170131721781248,
+    346382745817055242,
+    601095665061199882,
+    211368856839520257,
+    767824073186869279,
+    697444795785674783,
+    249568050951487499,
+    681368482855911471,
 ]
 
 UNITS = {
@@ -65,9 +69,10 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
 
     print("CSV Generation requested, starting conversion for ROBLOX Usernames")
 
-    time = unix_converter(2.3*len(results))
+    time = unix_converter(2.3 * len(results))
 
-    msg = await ctx.reply(f"Started generation, estimated completion: <t:{time}:R>")
+    msg = await ctx.reply(
+        f"Started generation, estimated completion: <t:{time}:R>")
 
     rm = []
 
@@ -80,7 +85,9 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
                 roblox_data = await res.json()
                 if "error" in roblox_data:
                     if roblox_data["error"] == "Unknown Member":
-                        await ctx.channel.send(f"Discord ID: {i[0]} not in discord, <@{i[0]}> will not be included in pay, but if you need his ticket amount it is: `{i[1]}`")
+                        await ctx.channel.send(
+                            f"Discord ID: {i[0]} not in discord, <@{i[0]}> will not be included in pay, but if you need his ticket amount it is: `{i[1]}`"
+                        )
                         print(f"{i[0]} NOT IN DISCORD, NOT INCLUDED IN CSV")
                         rm.append(i)
                         continue
@@ -186,12 +193,14 @@ async def get_tickets_in_timeframe(pool, user_id, days):
             result = await cur.fetchone()
             return result[0]
 
+
 def handle_cooldown_result(future, ctx):
     cooldown = future.result()
     # Return the appropriate Cooldown object
     if cooldown is not None:
         return commands.Cooldown(1, cooldown)
     return None
+
 
 def new_cooldown(ctx):
     # if ctx.author.id in BYPASS_LIST:
@@ -220,7 +229,9 @@ def get_cooldown_time_sync(pool, ctx):
     cursor = conn.cursor()
 
     # Query to count user tickets for this week (replace with your actual query)
-    cursor.execute("SELECT COUNT(*) FROM tickets WHERE user_id = %s AND DATE_TRUNC('week', timestamp) = DATE_TRUNC('week', CURRENT_DATE)", (user_id,))
+    cursor.execute(
+        "SELECT COUNT(*) FROM tickets WHERE user_id = %s AND DATE_TRUNC('week', timestamp) = DATE_TRUNC('week', CURRENT_DATE)",
+        (user_id, ))
     tickets = cursor.fetchone()[0]
 
     cursor.close()
@@ -237,6 +248,7 @@ def get_cooldown_time_sync(pool, ctx):
     time *= 60
 
     return time
+
 
 async def get_cooldown_time(pool, ctx):
     try:
@@ -432,13 +444,10 @@ class GuidesCommittee(commands.Cog):
         self.db_generated = False
 
         # Synchronous database
-        self.bot.sync_db = psycopg2.connect(
-            dbname="tickets",
-            user="cityairways",
-            password=PASSWORD,
-            host="citypostgres"
-        )
-
+        self.bot.sync_db = psycopg2.connect(dbname="tickets",
+                                            user="cityairways",
+                                            password=PASSWORD,
+                                            host="citypostgres")
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
@@ -555,11 +564,11 @@ class GuidesCommittee(commands.Cog):
     @commands.command()
     async def export(self, ctx):
         await ctx.message.add_reaction("<a:loading_f:1249799401958936576>")
-        file = await rank_users_by_tickets_this_month_to_csv(self.bot.pool, ctx)
+        file = await rank_users_by_tickets_this_month_to_csv(
+            self.bot.pool, ctx)
         await ctx.message.clear_reactions()
         with open(file, 'rb') as f:
             await ctx.send(file=discord.File(f, filename=file))
-
 
     @core.checks.thread_only()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
@@ -652,7 +661,6 @@ class GuidesCommittee(commands.Cog):
         self.bot.sync_db.close()
         await self.bot.pool.terminate()
         print("Bye Bye pool")
-
 
     @commands.command()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
@@ -935,7 +943,9 @@ class GuidesCommittee(commands.Cog):
                 f"Congratulations on closing your ticket {closer}. This is your ticket number `{week}` this week and your ticket number `{month}` this month. Your cooldown is: {cooldown} seconds"
             )
             if str(closer.id) == "1208702357425102880":
-                await closer.send("Hi Ben, this is a special message I have in store for when you close a ticket. I just want to extend my heartfelt congratulations, because this job you do is impressive.")
+                await closer.send(
+                    "Hi Ben, this is a special message I have in store for when you close a ticket. I just want to extend my heartfelt congratulations, because this job you do is impressive."
+                )
         except discord.errors.Forbidden:
             pass
 
