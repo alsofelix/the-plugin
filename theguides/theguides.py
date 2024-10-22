@@ -219,7 +219,7 @@ def get_cooldown_time_sync(pool, ctx):
     cursor = conn.cursor()
 
     # Query to count user tickets for this week (replace with your actual query)
-    cursor.execute("SELECT COUNT(*) FROM tickets WHERE user_id = %s AND week = current_week()", (user_id,))
+    cursor.execute("SELECT COUNT(*) FROM tickets WHERE user_id = %s AND timestamp >= NOW() - INTERVAL '%s days'", (user_id,))
     tickets = cursor.fetchone()[0]
 
     cursor.close()
