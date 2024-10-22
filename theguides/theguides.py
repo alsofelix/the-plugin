@@ -198,7 +198,7 @@ def new_cooldown(ctx):
     #    return None
 
     print(f"cooldown")
-    cooldown = get_cooldown_time(ctx.bot.sync_db, ctx)
+    cooldown = get_cooldown_time_sync(ctx.bot.sync_db, ctx)
     print(f"coldown {cooldown}")
 
     return commands.Cooldown(1, cooldown) if cooldown is not None else None
@@ -209,7 +209,7 @@ Ready to be implemented with @commands.dynamic_cooldown(new_cooldown, type=comma
 """
 
 
-async def get_cooldown_time(pool, ctx):
+async def get_cooldown_time_sync(pool, ctx):
     try:
         user_id = ctx.author
     except Exception:
@@ -226,6 +226,24 @@ async def get_cooldown_time(pool, ctx):
     conn.close()
 
     print(tickets)
+
+    if tickets < 5:
+        return 0
+    if 5 <= tickets < 36.6:
+        time = math.exp(K_VALUE * tickets)
+    else:
+        time = math.exp(K_VALUE * 36.6)
+
+    time *= 60
+
+    return time
+
+async def get_cooldown_time(pool, ctx):
+    try:
+        user_id = ctx.author
+    except Exception:
+        user_id = ctx
+    tickets = await count_user_tickets_this_week(pool, user_id)
 
     if tickets < 5:
         return 0
