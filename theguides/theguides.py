@@ -912,29 +912,29 @@ class GuidesCommittee(commands.Cog):
             self.bot.pool = pool
             self.db_generated = True
 
-        if thread.recipient.id == closer.id:
-            try:
-                await closer.send(
-                    "You closed your own ticket, it will not count towards your ticket count. A copy of this message is sent to management."
-                )
-            except discord.errors.Forbidden:
-                pass
-        else:
-            await add_tickets(self.bot.pool, closer.id)
-            week = await count_user_tickets_this_week(self.bot.pool, closer.id)
-            month = await count_user_tickets_this_month(self.bot.pool, closer.id)
-            print(f"Added 1 ticket to {closer} ({closer.id}")
+        # if thread.recipient.id == closer.id:
+        #     try:
+        #         await closer.send(
+        #             "You closed your own ticket, it will not count towards your ticket count. A copy of this message is sent to management."
+        #         )
+        #     except discord.errors.Forbidden:
+        #         pass
+        # else:
+        await add_tickets(self.bot.pool, closer.id)
+        week = await count_user_tickets_this_week(self.bot.pool, closer.id)
+        month = await count_user_tickets_this_month(self.bot.pool, closer.id)
+        print(f"Added 1 ticket to {closer} ({closer.id}")
 
-            cooldown = await get_cooldown_time(self.bot.pool, closer.id)
+        cooldown = await get_cooldown_time(self.bot.pool, closer.id)
 
-            try:
-                await closer.send(
-                    f"Congratulations on closing your ticket {closer}. This is your ticket number `{week}` this week and your ticket number `{month}` this month. Your cooldown is: {cooldown} seconds"
-                )
-                if str(closer.id) == "1208702357425102880":
-                    await closer.send("Hi Ben, this is a special message I have in store for when you close a ticket. I just want to extend my heartfelt congratulations, because this job you do is impressive.")
-            except discord.errors.Forbidden:
-                pass
+        try:
+            await closer.send(
+                f"Congratulations on closing your ticket {closer}. This is your ticket number `{week}` this week and your ticket number `{month}` this month. Your cooldown is: {cooldown} seconds"
+            )
+            if str(closer.id) == "1208702357425102880":
+                await closer.send("Hi Ben, this is a special message I have in store for when you close a ticket. I just want to extend my heartfelt congratulations, because this job you do is impressive.")
+        except discord.errors.Forbidden:
+            pass
 
 
 async def setup(bot):
