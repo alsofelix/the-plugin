@@ -183,6 +183,12 @@ async def get_tickets_in_timeframe(pool, user_id, days):
             result = await cur.fetchone()
             return result[0]
 
+def handle_cooldown_result(future, ctx):
+    cooldown = future.result()
+    # Return the appropriate Cooldown object
+    if cooldown is not None:
+        return commands.Cooldown(1, cooldown)
+    return None
 
 def new_cooldown(ctx):
     # if ctx.author.id in BYPASS_LIST:
@@ -190,9 +196,10 @@ def new_cooldown(ctx):
 
     loop = asyncio.get_running_loop()
     future = asyncio.run_coroutine_threadsafe(get_cooldown_time(ctx.bot.pool, ctx), loop)
-    cooldown = future.result()
+    future.add_done_callback(lambda f: handle_cooldown_result(f, ctx))
 
-    return commands.Cooldown(1, cooldown) if cooldown is not None else None
+    # return commands.Cooldown(1, cooldown) if cooldown is not None else None
+    return None
 
 
 """
