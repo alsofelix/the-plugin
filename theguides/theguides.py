@@ -223,7 +223,6 @@ def get_cooldown_time_sync(pool, ctx):
     tickets = cursor.fetchone()[0]
 
     cursor.close()
-    conn.close()
 
     print(tickets)
 
